@@ -1,0 +1,48 @@
+<div class="register-wrapper">
+  <div class="register-card">
+    
+    <div class="register-left">
+      <div class="logo-section">
+        <img src="assets/images/open-book.png" alt="Library Logo" class="logo" />
+        <h1>Library System</h1>
+        <p>Manage your books with ease</p>
+      </div>
+    </div>
+
+    <div class="register-right">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <h2>Create Account</h2>
+
+        <div class="form-group">
+          <div *ngIf="firstName?.touched && firstName?.invalid" class="error-msg">
+            First name is required.
+          </div>
+          <input type="text" formControlName="firstName" placeholder="First Name" />
+        </div>
+
+        <div class="form-group">
+          <div *ngIf="lastName?.touched && lastName?.invalid" class="error-msg">
+            Last name is required.
+          </div>
+          <input type="text" formControlName="lastName" placeholder="Last Name" />
+        </div>
+
+        <div class="form-group">
+          <div *ngIf="email?.touched && email?.invalid" class="error-msg">
+            Enter a valid email.
+          </div>
+          <input type="email" formControlName="email" placeholder="Email" />
+        </div>
+
+        <div class="form-group">
+          <div *ngIf="password?.touched && password?.invalid" class="error-msg">
+            Password must be at least 6 characters.
+          </div>
+          <input type="password" formControlName="password" placeholder="Password" />
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
