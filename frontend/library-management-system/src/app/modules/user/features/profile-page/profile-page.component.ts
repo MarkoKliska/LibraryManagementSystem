@@ -7,8 +7,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-profile-page',
   imports: [
     NavbarComponent,
-    RouterOutlet,
-    ProfilePageRoutingModule
+    RouterOutlet
 ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss'

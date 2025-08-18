@@ -8,7 +8,7 @@ import { DeleteAccountComponent } from './ui/delete-account/delete-account.compo
 import { ChangePasswordComponent } from './ui/change-password/change-password.component';
 
 
-const routes: Routes = [
+export const profileRoutes: Routes = [
   {
     path: '',
     component: ProfilePageComponent,
@@ -20,8 +20,4 @@ const routes: Routes = [
     ]
   }
 ];
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
 export class ProfilePageRoutingModule { }

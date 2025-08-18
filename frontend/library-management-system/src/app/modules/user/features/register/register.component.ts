@@ -64,7 +64,7 @@ export class RegisterComponent {
         this.router.navigate([RouteNames.Dashboard]);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Registration failed. Try again.';
+        this.errorMessage = err.error?.error || 'Registration failed. Try again.';
         this.isSubmitting = false;
       },
     });
