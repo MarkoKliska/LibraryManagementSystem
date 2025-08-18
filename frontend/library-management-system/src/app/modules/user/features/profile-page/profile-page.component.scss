@@ -1,0 +1,43 @@
+.profile-container {
+  .sidebar {
+    border-right: 1px solid #dee2e6;
+    background-color: var(--white-color);
+    color: var(--black-color);
+
+    h2 {
+      text-align: center;
+      font-size: x-large;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      width: 100%;
+
+      li {
+        width: 100%;
+
+        a {
+          text-align: center;
+          color: #101213;
+
+          &.active {
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+            font-weight: bold;
+          }
+
+          &:hover {
+            background-color: var(--tercial-color);
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    background-color: var(--bg-color);
+    min-height: 100%;
+  }
+}

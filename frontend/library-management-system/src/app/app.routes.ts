@@ -9,5 +9,10 @@ export const routes: Routes = [
   { path: RouteNames.Login, loadComponent: () => import('./modules/user/features/login/login.component').then(m => m.LoginComponent), canActivate: [NoAuthGuard] },
   { path: RouteNames.Register, loadComponent: () => import('./modules/user/features/register/register.component').then(m => m.RegisterComponent), canActivate: [NoAuthGuard] },
   { path: RouteNames.Dashboard, loadComponent: () => import('./modules/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate: [AuthGuard] },
+    { 
+    path: RouteNames.Profile, 
+    loadChildren: () => import('./modules/user/features/profile-page/profile-page.module').then(m => m.ProfilePageModule),
+    canActivate: [AuthGuard]
+  },
   { path: '**', redirectTo: RouteNames.Landing }
 ];

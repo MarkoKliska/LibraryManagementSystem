@@ -1,0 +1,46 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+
+    img {
+      width: 40px;
+    }
+
+    span {
+      font-size: 20px;
+      font-family: var(--font-montserrat);
+      font-weight: 600;
+    }
+  }
+
+  .links {
+    display: flex;
+    gap: 15px;
+
+    button {
+      padding: 6px 12px;
+      background-color: transparent;
+      color: var(--white-color);
+      border: 1px solid var(--white-color);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        background-color: var(--white-color);
+        color: var(--primary-color);
+      }
+    }
+  }
+}
