@@ -1,0 +1,46 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    
+    <div class="login-left">
+      <div class="logo-section">
+        <img src="assets/images/open-book.png" alt="Library Logo" class="logo" />
+        <h1>Library System</h1>
+        <p>Manage your books with ease</p>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <h2>Login</h2>
+
+        <div class="form-group">
+          <div *ngIf="email?.touched && email?.invalid" class="error-msg">
+            Enter a valid email.
+          </div>
+          <input type="email" formControlName="email" placeholder="Email" />
+        </div>
+
+        <div class="form-group">
+          <div *ngIf="password?.touched && password?.invalid" class="error-msg">
+            Password must be at least 6 characters.
+          </div>
+          <input type="password" formControlName="password" placeholder="Password" />
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+
+        <div *ngIf="errorMessage" class="error-msg" style="margin-top:10px">
+          {{ errorMessage }}
+        </div>
+        <div class="switch-auth">
+          <p>Don't have an account? 
+            <a (click)="goToRegister()" style="cursor:pointer">Register here</a>
+          </p>
+        </div>
+      </form>
+
+
+    </div>
+
+  </div>
+</div>

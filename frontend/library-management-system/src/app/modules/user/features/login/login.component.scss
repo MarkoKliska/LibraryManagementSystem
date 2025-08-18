@@ -1,0 +1,134 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(
+    to right,
+    var(--primary-color) 50%,
+    var(--secondary-color) 50%
+  );
+}
+
+.login-card {
+  display: flex;
+  width: 800px;
+  height: 500px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  background: linear-gradient(
+    to right,
+    var(--secondary-color) 50%,
+    var(--primary-color) 50%
+  );
+}
+
+.login-left {
+  flex: 1;
+  background-color: transparent;
+  color: var(--white-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+
+  .logo-section {
+    max-width: 250px;
+
+    .logo {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-family: var(--font-montserrat);
+    }
+
+    p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+  }
+}
+
+.login-right {
+  flex: 1;
+  background-color: transparent;
+  color: var(--white-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+
+  form {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    h2 {
+      margin-bottom: 10px;
+      font-family: var(--font-montserrat);
+      text-align: center;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .error-msg {
+      color: var(--error-color);
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    button {
+      padding: 10px;
+      background: var(--secondary-color);
+      color: var(--white-color);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.3s ease;
+
+      &:disabled {
+        background: #9fa8da;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):hover {
+        background: #2c4355;
+      }
+    }
+  }
+  .switch-auth {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+
+    a {
+      color: var(--white-color);
+      font-weight: bold;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}

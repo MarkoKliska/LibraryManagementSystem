@@ -5,24 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Infrastructure.Persistence.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(
+    LibraryDbContext context
+) : IUserRepository
 {
-    private readonly LibraryDbContext _context;
-
-    public UserRepository(LibraryDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Users
+        return await context.Users
             .FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted, cancellationToken);
     }
 
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)
     {
-        await _context.Users.AddAsync(user, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);//pogledaj unit of work pattern!!!!!!!!!!!
+        await context.Users.AddAsync(user, cancellationToken);
     }
+
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    => await context.Users
+        .FirstOrDefaultAsync(u => u.Email == email && !u.IsDeleted, cancellationToken);
+
 }
