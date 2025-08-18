@@ -44,6 +44,10 @@ export class RegisterComponent {
     return this.registerForm.controls;
   }
 
+  goToLogin(): void {
+    this.router.navigate([RouteNames.Login]);
+  }
+
   onSubmit(): void {
     if (this.registerForm.invalid) return;
 

@@ -22,7 +22,7 @@ public class AuthController(
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
 
-        return Created($"/api/users/{result.Value!.Id}", result.Value);
+        return Ok(result.Value);
     }
 
     [HttpPost("login")]

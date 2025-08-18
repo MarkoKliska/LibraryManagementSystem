@@ -32,7 +32,14 @@
         <div *ngIf="errorMessage" class="error-msg" style="margin-top:10px">
           {{ errorMessage }}
         </div>
+        <div class="switch-auth">
+          <p>Don't have an account? 
+            <a (click)="goToRegister()" style="cursor:pointer">Register here</a>
+          </p>
+        </div>
       </form>
+
+
     </div>
 
   </div>

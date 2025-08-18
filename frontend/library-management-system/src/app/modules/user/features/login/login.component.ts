@@ -37,6 +37,10 @@ export class LoginComponent {
     });
   }
 
+  goToRegister(): void {
+    this.router.navigate([RouteNames.Register]);
+  } 
+    
   onSubmit(): void {
     if (this.loginForm.invalid) return;
 

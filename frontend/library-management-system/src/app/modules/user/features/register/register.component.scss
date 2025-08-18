@@ -115,4 +115,20 @@
       }
     }
   }
+  .switch-auth {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+
+    a {
+      color: var(--white-color);
+      font-weight: bold;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 }
