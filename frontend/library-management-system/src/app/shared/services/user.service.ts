@@ -10,6 +10,7 @@ import { SaveUserChangesRequest } from '../dto/requests/user/save-user-changes-r
 import { SaveUserChangesResponse } from '../dto/responses/user/save-user-changes-response';
 import { GetUserResponse } from '../dto/responses/user/get-user-response';
 import { ChangePasswordRequest } from '../dto/requests/user/change-password-request';
+import { DeleteAccountRequest } from '../dto/requests/user/delete-account-request';
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +54,10 @@ export class UserService {
     );
   }
 
+  deleteAccount(request: DeleteAccountRequest): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.apiUrl}/user/delete-account`,
+      { body: request }
+    );
+  }
 }

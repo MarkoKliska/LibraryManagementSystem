@@ -1,1 +1,23 @@
-<p>delete-account works!</p>
+<div class="delete-account-card">
+  <h2 class="title">Delete Account</h2>
+  <p class="warning-text">Once deleted, your account cannot be recovered.</p>
+
+  <form [formGroup]="deleteAccountForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="password">Confirm Password</label>
+      <input 
+        id="password"
+        type="password"
+        formControlName="password"
+        [class.invalid]="f['password'].invalid && (f['password'].dirty || f['password'].touched)"
+      />
+      <div class="error" *ngIf="f['password'].invalid && (f['password'].dirty || f['password'].touched)">
+        Password is required.
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit danger" [disabled]="isSubmitting || deleteAccountForm.invalid">
+      {{ isSubmitting ? 'Deleting...' : 'Delete Account' }}
+    </button>
+  </form>
+</div>
