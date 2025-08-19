@@ -34,4 +34,18 @@ public class User
     {
         Role = role;
     }
+
+    public void SetFirstName(string firstName) 
+    { 
+        FirstName = firstName; 
+    }
+    public void SetLastName(string lastName)
+    {
+        LastName = lastName;
+    }
+    public void SetEmail(string email)
+    {
+        Email = email;
+    }
+
 }

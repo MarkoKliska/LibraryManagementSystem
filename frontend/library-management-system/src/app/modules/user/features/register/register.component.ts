@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { CreateUserRequest } from '../../../../shared/dto/requests/user/create-user-request';
 import { RouteNames } from '../../../../shared/consts/routes';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { LoaderService } from '../../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +32,9 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private userService: UserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService,
+    private loaderService: LoaderService
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -56,16 +60,22 @@ export class RegisterComponent {
 
     const request: CreateUserRequest = this.registerForm.value;
 
+    this.loaderService.startLoading();
+
     this.userService.createUser(request).subscribe({
       next: (response) => {
         if (response.token) {
           this.authService.setToken(response.token);
         }
+        this.loaderService.stopLoading();
+        this.toastService.showSuccess('Account created successfully.');
         this.router.navigate([RouteNames.Dashboard]);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Registration failed. Try again.';
+        this.errorMessage = err.error?.error || 'Registration failed. Try again.';
         this.isSubmitting = false;
+        this.loaderService.stopLoading();
+        this.toastService.showError(err.error?.error, 'Error');
       },
     });
   }
