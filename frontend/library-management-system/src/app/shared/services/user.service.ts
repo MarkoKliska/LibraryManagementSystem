@@ -9,6 +9,7 @@ import { LoginResponse } from '../dto/responses/user/login-response';
 import { SaveUserChangesRequest } from '../dto/requests/user/save-user-changes-request';
 import { SaveUserChangesResponse } from '../dto/responses/user/save-user-changes-response';
 import { GetUserResponse } from '../dto/responses/user/get-user-response';
+import { ChangePasswordRequest } from '../dto/requests/user/change-password-request';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,16 @@ export class UserService {
   }
 
   getUser(): Observable<GetUserResponse> {
-    return this.http.get<GetUserResponse>(`${environment.apiUrl}/user/get-user`);
+    return this.http.get<GetUserResponse>(
+      `${environment.apiUrl}/user/get-user`
+    );
   }
+
+  changePassword(request: ChangePasswordRequest): Observable<void> {
+    return this.http.patch<void>(
+      `${environment.apiUrl}/user/change-password`,
+      request
+    );
+  }
+
 }

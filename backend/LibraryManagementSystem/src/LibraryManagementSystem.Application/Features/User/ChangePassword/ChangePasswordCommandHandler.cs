@@ -21,6 +21,12 @@ public sealed class ChangePasswordCommandHandler(
         if (!PasswordHasher.VerifyPassword(command.Request.OldPassword, user.PasswordHash))
             return Result.Failure("Old password is incorrect.");
 
+        if (command.Request.NewPassword.Length < 6)
+            return Result.Failure("Password needs to be at least 6 characters long.");
+
+        if (command.Request.OldPassword == command.Request.NewPassword)
+            return Result.Failure("New password and old password can not be the same.");
+
         var newHash = PasswordHasher.HashPassword(command.Request.NewPassword);
         user.SetPasswordHash(newHash);
 
