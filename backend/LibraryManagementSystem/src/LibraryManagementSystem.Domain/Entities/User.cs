@@ -34,4 +34,9 @@ public class User
     {
         Role = role;
     }
+
+    public void SetPasswordHash(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+    }
 }
