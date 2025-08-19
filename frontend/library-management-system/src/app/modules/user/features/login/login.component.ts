@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { LoginRequest } from '../../../../shared/dto/requests/user/login-request';
 import { LoginResponse } from '../../../../shared/dto/responses/user/login-response';
 import { RouteNames } from '../../../../shared/consts/routes';
+import { LoaderService } from '../../../../shared/services/loader.service';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +31,9 @@ export class LoginComponent {
     private fb: FormBuilder,
     private userService: UserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private readonly loaderService: LoaderService,
+    private toastService: ToastService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -49,16 +53,21 @@ export class LoginComponent {
 
     const request: LoginRequest = this.loginForm.value;
 
+    this.loaderService.startLoading();
+
     this.userService.login(request).subscribe({
       next: (response: LoginResponse) => {
         if (response.token) {
           this.authService.setToken(response.token);
           this.router.navigate([RouteNames.Dashboard]);
         }
+        this.loaderService.stopLoading();
       },
       error: (err) => {
         this.errorMessage = err.error?.error || 'Login failed. Check credentials.';
+        this.toastService.showError(err.error?.error, 'Error')
         this.isSubmitting = false;
+        this.loaderService.stopLoading();
       }
     });
   }
