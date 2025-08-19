@@ -1,8 +1,10 @@
 ﻿using LibraryManagementSystem.Application.DTOs.User;
+using LibraryManagementSystem.Application.DTOs.User.ChangePassword;
+using LibraryManagementSystem.Application.DTOs.User.DeleteAccount;
 using LibraryManagementSystem.Application.DTOs.User.GetUser;
 using LibraryManagementSystem.Application.DTOs.User.SaveUserChanges;
-using LibraryManagementSystem.Application.DTOs.User.ChangePassword;
 using LibraryManagementSystem.Application.Features.User.ChangePassword;
+using LibraryManagementSystem.Application.Features.User.DeleteAccount;
 using LibraryManagementSystem.Application.Features.User.GetUser;
 using LibraryManagementSystem.Application.Features.User.SaveChanges;
 using MediatR;
@@ -22,12 +24,6 @@ public class UserController (
     [HttpPatch("change-password")]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto request, CancellationToken ct)
     {
-        //var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier)
-        //                  ?? User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
-
-        //if (userIdClaim is null || !Guid.TryParse(userIdClaim, out var userId))
-        //    return Unauthorized(new { error = "Invalid user token." });
-
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrWhiteSpace(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
@@ -76,5 +72,21 @@ public class UserController (
             return BadRequest(new { error = result.Error });
 
         return Ok(result.Value);
+    }
+
+    [HttpDelete("delete-account")]
+    public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountRequestDto request, CancellationToken ct)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrWhiteSpace(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+            return Unauthorized(new { error = "Unauthorized" });
+
+        var result = await mediator.Send(new DeleteAccountCommand(userId, request), ct);
+
+        if (!result.IsSuccess)
+            return BadRequest(new { error = result.Error });
+
+        return Ok(new { message = "Account deleted successfully." });
     }
 }

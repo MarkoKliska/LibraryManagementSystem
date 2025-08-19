@@ -20,9 +20,12 @@ public sealed class LoginCommandHandler(
         if (user is null)
             return Result<LoginResponseDto>.Failure("Invalid email or password.");
 
+        if (user.IsDeleted)
+            return Result<LoginResponseDto>.Failure("User not found.");
+
         var valid = PasswordHasher.VerifyPassword(req.Password, user.PasswordHash);
         if (!valid)
-            return Result<LoginResponseDto>.Failure("Icorrect password.");
+            return Result<LoginResponseDto>.Failure("Incorrect password.");
 
         var token = jwtService.GenerateToken(user.Id, user.Email);
 

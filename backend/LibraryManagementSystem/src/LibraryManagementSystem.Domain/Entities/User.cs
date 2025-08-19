@@ -55,4 +55,8 @@ public class User
         Email = email;
     }
 
+    public void SetDeleted()
+    {
+        IsDeleted = true;
+    }
 }
