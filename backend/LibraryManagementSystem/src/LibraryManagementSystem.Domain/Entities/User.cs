@@ -18,6 +18,7 @@ public class User
 
     public bool IsDeleted { get; private set; } = false;
     public UserRole Role { get; private set; } = UserRole.User;
+    public ICollection<Rental> Rentals { get; private set; } = new List<Rental>();
     public User() { }
     public User(string firstName, string lastName, string email, string passwordHash, UserRole role = UserRole.User)
     {

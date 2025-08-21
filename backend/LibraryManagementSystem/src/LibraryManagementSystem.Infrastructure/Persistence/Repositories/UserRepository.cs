@@ -23,5 +23,4 @@ public class UserRepository(
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     => await context.Users
         .FirstOrDefaultAsync(u => u.Email == email && !u.IsDeleted, cancellationToken);
-
 }

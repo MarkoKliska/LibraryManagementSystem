@@ -24,6 +24,11 @@ public static class ServiceCollectionExtensions
             ));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
+        services.AddScoped<IGenreRepository, GenreRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IBookCopyRepository, BookCopyRepository>();
+        services.AddScoped<IRentalRepository, RentalRepository>();
 
         var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
 
