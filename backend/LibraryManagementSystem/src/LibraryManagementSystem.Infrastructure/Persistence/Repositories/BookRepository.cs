@@ -29,4 +29,16 @@ public class BookRepository(
     {
         await context.Books.AddAsync(book, cancellationToken);
     }
+
+    public async Task<IEnumerable<Book>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Books
+            .Include(b => b.Author)
+            .Include(b => b.Genre)
+            .Include(b => b.Copies)
+            .ThenInclude(c => c.Rentals)
+            .ThenInclude(r => r.User)
+            .Where(b => !b.IsDeleted)
+            .ToListAsync(cancellationToken);
+    }
 }

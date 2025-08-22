@@ -19,4 +19,14 @@ public class AuthorRepository(
     {
         await context.Authors.AddAsync(author, cancellationToken);
     }
+
+    public async Task<bool> ExistsAsync(string? firstName, string lastName, CancellationToken cancellationToken = default)
+    {
+        return await context.Authors.AnyAsync(
+            a => !a.IsDeleted &&
+                 a.LastName.ToLower() == lastName.ToLower().Trim() &&
+                 (string.IsNullOrEmpty(firstName) || a.FirstName.ToLower() == firstName.ToLower().Trim()),
+            cancellationToken
+        );
+    }
 }

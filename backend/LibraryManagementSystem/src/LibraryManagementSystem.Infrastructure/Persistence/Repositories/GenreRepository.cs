@@ -19,4 +19,11 @@ public class GenreRepository(
     {
         await context.Genres.AddAsync(genre, cancellationToken);
     }
+
+    public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default)
+    {
+        return await context.Genres
+            .AnyAsync(g => g.Name.ToLower() == name.ToLower() && !g.IsDeleted, cancellationToken);
+    }
+
 }

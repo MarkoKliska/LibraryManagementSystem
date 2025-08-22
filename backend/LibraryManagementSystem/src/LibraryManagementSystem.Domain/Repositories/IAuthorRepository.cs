@@ -6,4 +6,5 @@ public interface IAuthorRepository
 {
     Task<Author?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task AddAsync(Author author, CancellationToken cancellationToken = default);
+    Task<bool> ExistsAsync(string? firstName, string lastName, CancellationToken cancellationToken = default);
 }

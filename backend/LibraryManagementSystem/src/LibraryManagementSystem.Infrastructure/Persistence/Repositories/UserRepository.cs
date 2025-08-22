@@ -23,4 +23,11 @@ public class UserRepository(
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     => await context.Users
         .FirstOrDefaultAsync(u => u.Email == email && !u.IsDeleted, cancellationToken);
+    
+    public async Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Users
+            .Where(u => !u.IsDeleted)
+            .ToListAsync(cancellationToken);
+    }
 }
