@@ -6,6 +6,7 @@ import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { AddGenreRequest } from '../../../../shared/dto/requests/admin/add-genre-request';
 import { AddGenreResponse } from '../../../../shared/dto/responses/admin/add-genre-response';
+import { DeleteGenreRequest } from '../../../../shared/dto/requests/admin/delete-genre-request';
 
 @Component({
   selector: 'app-add-genre',
@@ -91,9 +92,11 @@ export class GenresComponent implements OnInit {
 
   deleteGenre(genreId: string): void {
     if (!confirm('Are you sure you want to delete this genre?')) return;
-
+    const request: DeleteGenreRequest = {
+       genreId 
+      };
     this.loaderService.startLoading();
-    this.adminService.deleteGenre(genreId).subscribe({
+    this.adminService.deleteGenre(request).subscribe({
       next: () => {
         this.genres = this.genres.filter(g => g.id !== genreId);
         this.loaderService.stopLoading();

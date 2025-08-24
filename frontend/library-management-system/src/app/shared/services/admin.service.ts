@@ -14,6 +14,9 @@ import { UserListResponse } from '../dto/responses/admin/user-list-response';
 import { UserDetailsResponse } from '../dto/responses/admin/user-details-response';
 import { EditBookRequest } from '../dto/requests/admin/edit-book-request';
 import { SaveUserChangesRequest } from '../dto/requests/user/save-user-changes-request';
+import { DeleteBookResponse } from '../dto/responses/admin/delete-book-response';
+import { DeleteAuthorRequest } from '../dto/requests/admin/delete-author-request';
+import { DeleteGenreRequest } from '../dto/requests/admin/delete-genre-request';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +38,8 @@ export class AdminService {
     return this.http.post<AddBookResponse>(`${this.apiUrl}/books`, request);
   }
 
-  deleteBook(request: DeleteBookRequest): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.apiUrl}/books`, { body: request });
+  deleteBook(request: DeleteBookRequest): Observable<DeleteBookResponse> {
+    return this.http.delete<DeleteBookResponse>(`${this.apiUrl}/books`, { body: request });
   }
 
   getAllBooks(): Observable<BookListResponse[]> {
@@ -67,12 +70,12 @@ export class AdminService {
     return this.http.get<AddBookResponse>(`${this.apiUrl}/books/${bookId}`);
   }
 
-  deleteAuthor(authorId: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.apiUrl}/author`, { body: { authorId } });
+  deleteAuthor(request: DeleteAuthorRequest): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/author`, { body: request });
   }
 
-  deleteGenre(genreId: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.apiUrl}/genre`, { body: { genreId } });
+  deleteGenre(request: DeleteGenreRequest): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/genre`, { body: request });
   }
 
   saveUserChanges(userId: string, request: SaveUserChangesRequest): Observable<{ message: string }> {

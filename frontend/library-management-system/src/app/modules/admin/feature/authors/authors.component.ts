@@ -6,6 +6,7 @@ import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { CommonModule } from '@angular/common';
 import { AddAuthorResponse } from '../../../../shared/dto/responses/admin/add-author-response';
+import { DeleteAuthorRequest } from '../../../../shared/dto/requests/admin/delete-author-request';
 
 @Component({
   selector: 'app-add-author',
@@ -92,9 +93,11 @@ export class AuthorsComponent implements OnInit {
 
   deleteAuthor(authorId: string): void {
     if (!confirm('Are you sure you want to delete this author?')) return;
-
+    const request: DeleteAuthorRequest = {
+      authorId: authorId
+    }
     this.loaderService.startLoading();
-    this.adminService.deleteAuthor(authorId).subscribe({
+    this.adminService.deleteAuthor(request).subscribe({
       next: () => {
         this.authors = this.authors.filter(a => a.id !== authorId);
         this.loaderService.stopLoading();

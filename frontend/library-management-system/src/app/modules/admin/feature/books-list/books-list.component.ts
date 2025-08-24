@@ -6,6 +6,7 @@ import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { Router } from '@angular/router';
 import { DeleteBookRequest } from '../../../../shared/dto/requests/admin/delete-book-request';
+import { DeleteBookResponse } from '../../../../shared/dto/responses/admin/delete-book-response';
 
 @Component({
   selector: 'app-books-list',
@@ -53,10 +54,10 @@ export class BooksListComponent implements OnInit {
       this.loaderService.startLoading();
       const request: DeleteBookRequest = { bookId };
       this.adminService.deleteBook(request).subscribe({
-        next: () => {
+        next: (response: DeleteBookResponse) => {
           this.books = this.books.filter(book => book.id !== bookId);
           this.loaderService.stopLoading();
-          this.toastService.showSuccess('Book deleted successfully.', 'Success');
+          this.toastService.showSuccess(response.message || 'Book deleted successfully.', 'Success');
         },
         error: (err) => {
           this.errorMessage = err.error?.error || 'Failed to delete book.';
