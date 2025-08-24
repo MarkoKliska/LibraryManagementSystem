@@ -29,4 +29,11 @@ public class AuthorRepository(
             cancellationToken
         );
     }
+
+    public async Task<IEnumerable<Author>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Authors
+            .Where(a => !a.IsDeleted)
+            .ToListAsync(cancellationToken);
+    }
 }

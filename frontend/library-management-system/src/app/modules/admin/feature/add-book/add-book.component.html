@@ -1,0 +1,76 @@
+<div class="add-book-card">
+  <h2>Add Book</h2>
+  <form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input 
+        id="title" 
+        type="text" 
+        formControlName="title"
+        [class.invalid]="f['title'].invalid && (f['title'].dirty || f['title'].touched)"
+      />
+      <div class="error" *ngIf="f['title'].invalid && (f['title'].dirty || f['title'].touched)">
+        Title is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="authorId">Author</label>
+      <select 
+        id="authorId" 
+        formControlName="authorId"
+        [class.invalid]="f['authorId'].invalid && (f['authorId'].dirty || f['authorId'].touched)"
+      >
+        <option value="" disabled>Select an author</option>
+        <option *ngFor="let author of authors" [value]="author.id">
+          {{ author.firstName ? author.firstName + ' ' + author.lastName : author.lastName }}
+        </option>
+      </select>
+      <div class="error" *ngIf="f['authorId'].invalid && (f['authorId'].dirty || f['authorId'].touched)">
+        Author is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="genreId">Genre</label>
+      <select 
+        id="genreId" 
+        formControlName="genreId"
+        [class.invalid]="f['genreId'].invalid && (f['genreId'].dirty || f['genreId'].touched)"
+      >
+        <option value="" disabled>Select a genre</option>
+        <option *ngFor="let genre of genres" [value]="genre.id">
+          {{ genre.name }}
+        </option>
+      </select>
+      <div class="error" *ngIf="f['genreId'].invalid && (f['genreId'].dirty || f['genreId'].touched)">
+        Genre is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="isbn13">ISBN13</label>
+      <input 
+        id="isbn13" 
+        type="text" 
+        formControlName="isbn13"
+        [class.invalid]="f['isbn13'].invalid && (f['isbn13'].dirty || f['isbn13'].touched)"
+      />
+      <div class="error" *ngIf="f['isbn13'].invalid && (f['isbn13'].dirty || f['isbn13'].touched)">
+        Please enter a valid 13-digit ISBN.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="numberOfCopies">Number of Copies</label>
+      <input 
+        id="numberOfCopies" 
+        type="number" 
+        formControlName="numberOfCopies"
+        [class.invalid]="f['numberOfCopies'].invalid && (f['numberOfCopies'].dirty || f['numberOfCopies'].touched)"
+      />
+      <div class="error" *ngIf="f['numberOfCopies'].invalid && (f['numberOfCopies'].dirty || f['numberOfCopies'].touched)">
+        At least one copy is required.
+      </div>
+    </div>
+    <button type="submit" class="btn-submit" [disabled]="isSubmitting || addBookForm.invalid">
+      {{ isSubmitting ? 'Adding...' : 'Add Book' }}
+    </button>
+  </form>
+</div>

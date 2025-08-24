@@ -1,4 +1,5 @@
 ﻿using LibraryManagementSystem.Application.Authentication;
+using LibraryManagementSystem.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,13 +12,14 @@ public class JwtTokenService (
     IConfiguration config
 ) : IJwtTokenService
 {
-    public string GenerateToken(Guid userId, string email)
+    public string GenerateToken(Guid userId, string email, UserRole role)
     {
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, role.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));

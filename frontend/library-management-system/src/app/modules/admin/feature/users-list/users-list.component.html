@@ -1,0 +1,25 @@
+<div class="users-list-card">
+  <h2>Users</h2>
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <table *ngIf="users.length; else noUsers">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.firstName }} {{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button (click)="viewUserDetails(user.id)">View Details</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noUsers>
+    <p>No users found.</p>
+  </ng-template>
+</div>

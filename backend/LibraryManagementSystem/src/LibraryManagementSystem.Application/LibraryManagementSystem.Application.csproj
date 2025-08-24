@@ -15,9 +15,4 @@
     <ProjectReference Include="..\LibraryManagementSystem.Domain\LibraryManagementSystem.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Admin\DeleteBook\" />
-    <Folder Include="Features\Library\" />
-  </ItemGroup>
-
 </Project>

@@ -26,4 +26,10 @@ public class GenreRepository(
             .AnyAsync(g => g.Name.ToLower() == name.ToLower() && !g.IsDeleted, cancellationToken);
     }
 
+    public async Task<IEnumerable<Genre>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Genres
+            .Where(g => !g.IsDeleted)
+            .ToListAsync(cancellationToken);
+    }
 }

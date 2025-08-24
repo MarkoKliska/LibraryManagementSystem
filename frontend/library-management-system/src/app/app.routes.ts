@@ -4,6 +4,7 @@ import { LandingPageComponent } from './modules/landing-page/landing-page.compon
 import { NoAuthGuard } from './shared/guards/no-auth.guard';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { profileRoutes } from './modules/user/features/profile-page/profile-page-routing.module';
+import { adminRoutes } from './modules/admin/admin-routing.module';
 
 export const routes: Routes = [
   { path: RouteNames.Landing, component: LandingPageComponent, canActivate: [NoAuthGuard] },
@@ -13,6 +14,11 @@ export const routes: Routes = [
   { 
     path: RouteNames.Profile, 
     children: profileRoutes,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'admin', 
+    children: adminRoutes,
     canActivate: [AuthGuard]
   },
   { path: '**', redirectTo: RouteNames.Landing }

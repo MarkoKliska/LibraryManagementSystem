@@ -1,0 +1,77 @@
+<div class="user-details-card" *ngIf="user">
+  <h2>User Details</h2>
+
+  <div class="user-info" *ngIf="!isEditing">
+    <p><strong>Name:</strong> {{ user.firstName || '-' }} {{ user.lastName }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <button class="btn-edit" (click)="toggleEdit()">Edit</button>
+  </div>
+
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="isEditing">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input 
+        id="firstName" 
+        type="text" 
+        formControlName="firstName"
+      />
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input 
+        id="lastName" 
+        type="text" 
+        formControlName="lastName"
+        [class.invalid]="f['lastName'].invalid && (f['lastName'].dirty || f['lastName'].touched)"
+      />
+      <div class="error" *ngIf="f['lastName'].invalid && (f['lastName'].dirty || f['lastName'].touched)">
+        Last name is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input 
+        id="email" 
+        type="email" 
+        formControlName="email"
+        [class.invalid]="f['email'].invalid && (f['email'].dirty || f['email'].touched)"
+      />
+      <div class="error" *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
+        <div *ngIf="f['email'].errors?.['required']">Email is required.</div>
+        <div *ngIf="f['email'].errors?.['email']">Invalid email format.</div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-submit" [disabled]="isSubmitting || editForm.invalid">
+        {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
+      </button>
+      <button type="button" class="btn-cancel" (click)="toggleEdit()" [disabled]="isSubmitting">
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <h3>Rentals</h3>
+  <table *ngIf="user.rentals.length; else noRentals">
+    <thead>
+      <tr>
+        <th>Book Title</th>
+        <th>Rental Date</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rental of user.rentals">
+        <td>{{ rental.bookTitle }}</td>
+        <td>{{ rental.rentalDate | date:'mediumDate' }}</td>
+        <td>{{ rental.dueDate | date:'mediumDate' }}</td>
+        <td>{{ rental.returnDate ? 'Returned' : 'Active' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noRentals>
+    <p>No rentals found.</p>
+  </ng-template>
+</div>
+<div class="error" *ngIf="errorMessage && !user">{{ errorMessage }}</div>
