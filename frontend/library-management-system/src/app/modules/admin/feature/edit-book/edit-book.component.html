@@ -1,0 +1,73 @@
+<div class="update-book-card" *ngIf="book">
+  <h2>Update Book</h2>
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <form (ngSubmit)="updateBook()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        id="title"
+        type="text"
+        [(ngModel)]="book.title"
+        name="title"
+        placeholder="Enter book title"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="authorId">Author</label>
+      <select
+        id="authorId"
+        [(ngModel)]="book.authorId"
+        name="authorId"
+        required
+      >
+        <option value="" disabled>Select an author</option>
+        <option *ngFor="let author of authors" [value]="author.id">
+          {{ author.firstName }} {{ author.lastName }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="genreId">Genre</label>
+      <select
+        id="genreId"
+        [(ngModel)]="book.genreId"
+        name="genreId"
+        required
+      >
+        <option value="" disabled>Select a genre</option>
+        <option *ngFor="let genre of genres" [value]="genre.id">
+          {{ genre.name }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="isbn13">ISBN13</label>
+      <input
+        id="isbn13"
+        type="text"
+        [(ngModel)]="book.isbn13"
+        name="isbn13"
+        placeholder="Enter ISBN13"
+        maxlength="13"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="numberOfCopies">Number of Copies</label>
+      <input
+        id="numberOfCopies"
+        type="number"
+        [(ngModel)]="book.numberOfCopies"
+        name="numberOfCopies"
+        min="1"
+        required
+      />
+    </div>
+    <div class="form-actions">
+      <button type="submit">Update Book</button>
+      <button type="button" (click)="router.navigate(['admin', 'books'])">Cancel</button>
+    </div>
+  </form>
+</div>
+<div class="error" *ngIf="errorMessage && !book">{{ errorMessage }}</div>

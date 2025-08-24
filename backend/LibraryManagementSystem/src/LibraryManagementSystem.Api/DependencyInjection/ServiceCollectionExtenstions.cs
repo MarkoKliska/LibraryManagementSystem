@@ -1,7 +1,10 @@
-﻿using LibraryManagementSystem.Infrastructure.DependencyInjection;
-using LibraryManagementSystem.Application.DependencyInjection;
-
+﻿using LibraryManagementSystem.Application.DependencyInjection;
+using LibraryManagementSystem.Infrastructure.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+using System.Text;
 
 namespace LibraryManagementSystem.Api.DependencyInjection;
 
@@ -9,6 +12,25 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration config)
     {
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = config["Jwt:Issuer"],
+                        ValidAudience = config["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(config["Jwt:Key"])),
+
+                        RoleClaimType = ClaimTypes.Role
+                    };
+                });
+
+
         services.AddControllers();
 
         services.AddApplicationServices();

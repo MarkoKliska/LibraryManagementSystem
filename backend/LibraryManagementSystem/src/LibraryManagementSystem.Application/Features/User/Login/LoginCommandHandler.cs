@@ -27,7 +27,7 @@ public sealed class LoginCommandHandler(
         if (!valid)
             return Result<LoginResponseDto>.Failure("Incorrect password.");
 
-        var token = jwtService.GenerateToken(user.Id, user.Email);
+        var token = jwtService.GenerateToken(user.Id, user.Email, user.Role);
 
         var response = new LoginResponseDto { Token = token };
         return Result<LoginResponseDto>.Success(response);

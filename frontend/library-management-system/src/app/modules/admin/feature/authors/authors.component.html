@@ -1,0 +1,55 @@
+<div class="add-author-card">
+  <h2>Manage Authors</h2>
+  
+  <h3>Add New Author</h3>
+  <form [formGroup]="addAuthorForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input 
+        id="firstName" 
+        type="text" 
+        formControlName="firstName"
+      />
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input 
+        id="lastName" 
+        type="text" 
+        formControlName="lastName"
+        [class.invalid]="f['lastName'].invalid && (f['lastName'].dirty || f['lastName'].touched)"
+      />
+      <div class="error" *ngIf="f['lastName'].invalid && (f['lastName'].dirty || f['lastName'].touched)">
+        Last name is required.
+      </div>
+    </div>
+    <button type="submit" class="btn-submit" [disabled]="isSubmitting || addAuthorForm.invalid">
+      {{ isSubmitting ? 'Adding...' : 'Add Author' }}
+    </button>
+  </form>
+
+  <h3>Authors List</h3>
+  <div class="authors-list" *ngIf="authors.length; else noAuthors">
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let author of authors">
+          <td>{{ author.firstName || '-' }}</td>
+          <td>{{ author.lastName }}</td>
+          <td>
+            <button (click)="deleteAuthor(author.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noAuthors>
+    <p>No authors found.</p>
+  </ng-template>
+</div>

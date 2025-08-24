@@ -43,7 +43,7 @@ public sealed class CreateUserCommandHandler(
         await users.AddAsync(user, ct);
         await uow.SaveChangesAsync(ct);
 
-        var token = jwtService.GenerateToken(user.Id, user.Email);
+        var token = jwtService.GenerateToken(user.Id, user.Email, user.Role);
 
         var response = new CreateUserResponseDto
         {

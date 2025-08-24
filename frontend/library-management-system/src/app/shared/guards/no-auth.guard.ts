@@ -18,16 +18,13 @@ export class NoAuthGuard implements CanActivate {
       const now = Math.floor(Date.now() / 1000);
 
       if (decoded.exp && decoded.exp > now) {
-        // token još važi → preusmeri na dashboard
         this.router.navigate(['/dashboard']);
         return false;
       } else {
-        // token istekao → ukloni ga
         localStorage.removeItem('token');
         return true;
       }
     } catch (e) {
-      // token nije validan
       localStorage.removeItem('token');
       return true;
     }

@@ -1,0 +1,58 @@
+.books-list-card {
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-color, #333);
+    margin-bottom: 1.5rem;
+  }
+
+  .error {
+    color: var(--danger, #e53935);
+    margin-bottom: 1rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color, #ccc);
+    }
+
+    th {
+      font-weight: 600;
+      color: var(--text-color, #333);
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin-right: 0.5rem;
+      background: var(--primary, #1976d2);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: var(--primary-dark, #1565c0);
+      }
+
+      &:last-child {
+        background: var(--danger, #e53935);
+        &:hover {
+          background: var(--danger-dark, #c62828);
+        }
+      }
+    }
+  }
+}

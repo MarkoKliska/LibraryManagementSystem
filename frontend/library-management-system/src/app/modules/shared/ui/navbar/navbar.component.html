@@ -7,6 +7,9 @@
   <div class="links">
     <button (click)="goToDashboard()">Dashboard</button>
     <button (click)="goToProfile()">My Profile</button>
+
+    <button *ngIf="isAdmin" (click)="goToAdminPanel()">Admin Panel</button>
+
     <button (click)="logout()">Logout</button>
   </div>
 </nav>

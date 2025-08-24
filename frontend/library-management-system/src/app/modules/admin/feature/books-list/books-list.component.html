@@ -1,0 +1,34 @@
+<div class="books-list-card">
+  <h2>Books</h2>
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <table *ngIf="books.length; else noBooks">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>ISBN13</th>
+        <th>Copies</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <td>{{ book.title }}</td>
+        <td>{{ book.authorName }}</td>
+        <td>{{ book.genreName }}</td>
+        <td>{{ book.isbn13 }}</td>
+        <td>{{ book.availableCopies }} / {{ book.totalCopies }}</td>
+        <td>{{ book.rentedByUserEmail ? 'Rented by ' + book.rentedByUserEmail : 'Available' }}</td>
+        <td>
+          <button (click)="editBook(book.id)">Edit</button>
+          <button (click)="deleteBook(book.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noBooks>
+    <p>No books found.</p>
+  </ng-template>
+</div>
