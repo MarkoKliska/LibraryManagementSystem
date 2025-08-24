@@ -6,5 +6,6 @@ export enum RouteNames{
     Profile = 'profile',
     GeneralInformationRoute = 'general-information',
     ChangePasswordRoute = 'change-password',
-    DeleteMyAccountRoute = 'delete-account'
+    DeleteMyAccountRoute = 'delete-account',
+    Admin = "admin"
 }
