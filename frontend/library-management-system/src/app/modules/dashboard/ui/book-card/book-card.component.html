@@ -1,0 +1,8 @@
+<div class="book-card">
+  <h3>{{ book.title }}</h3>
+  <p><strong>Author:</strong> {{ book.authorName }}</p>
+  <p><strong>Genre:</strong> {{ book.genreName }}</p>
+  <p *ngIf="!isRentedBook(book)"><strong>Available:</strong> {{ book.availableCopies }} / {{ book.totalCopies }}</p>
+  <p *ngIf="isRentedBook(book)"><strong>Due Date:</strong> {{ book.dueDate | date:'mediumDate' }}</p>
+  <button class="btn-action" (click)="onAction()">{{ viewMode === 'available' ? 'Rent' : 'Return' }}</button>
+</div>

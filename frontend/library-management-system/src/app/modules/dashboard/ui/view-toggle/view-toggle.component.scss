@@ -1,0 +1,27 @@
+.view-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  .toggle-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--secondary-color, #415E72);
+    color: var(--white-color, #fff);
+    font-family: var(--font-montserrat);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &.active {
+      background: var(--primary-color, #17313E);
+    }
+
+    &:hover:not(.active) {
+      background: var(--primary-color, #17313E);
+    }
+  }
+}

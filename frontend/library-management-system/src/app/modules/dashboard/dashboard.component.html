@@ -1,1 +1,48 @@
 <app-navbar></app-navbar>
+<div class="dashboard-container">
+  <div class="view-toggle">
+    <button 
+      class="toggle-btn" 
+      [class.active]="viewMode === 'available'"
+      (click)="switchView('available')"
+    >
+      Available Books
+    </button>
+    <button 
+      class="toggle-btn" 
+      [class.active]="viewMode === 'rented'"
+      (click)="switchView('rented')"
+    >
+      My Rented Books
+    </button>
+  </div>
+
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <div class="book-grid" *ngIf="viewMode === 'available' && availableBooks.length">
+    <div class="book-card" *ngFor="let book of availableBooks">
+      <h3>{{ book.title }}</h3>
+      <p><strong>Author:</strong> {{ book.authorName }}</p>
+      <p><strong>Genre:</strong> {{ book.genreName }}</p>
+      <p><strong>Available:</strong> {{ book.availableCopies }} / {{ book.totalCopies }}</p>
+      <button class="btn-action" (click)="rentBook(book.id)">Rent</button>
+    </div>
+  </div>
+
+  <div class="book-grid" *ngIf="viewMode === 'rented' && rentedBooks.length">
+    <div class="book-card" *ngFor="let book of rentedBooks">
+      <h3>{{ book.title }}</h3>
+      <p><strong>Author:</strong> {{ book.authorName }}</p>
+      <p><strong>Genre:</strong> {{ book.genreName }}</p>
+      <p><strong>Due Date:</strong> {{ book.dueDate | date:'mediumDate' }}</p>
+      <button class="btn-action" (click)="returnBook(book.rentalId)">Return</button>
+    </div>
+  </div>
+
+  <div class="no-books" *ngIf="viewMode === 'available' && !availableBooks.length && !errorMessage">
+    No available books at the moment.
+  </div>
+  <div class="no-books" *ngIf="viewMode === 'rented' && !rentedBooks.length && !errorMessage">
+    You haven't rented any books yet.
+  </div>
+</div>
