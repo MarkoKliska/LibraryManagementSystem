@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagementSystem.Application.DTOs.Library.GetRentedBooks;
 
-public record RentedBookResponseDto
+public record GetRentedBookResponseDto
 {
     public Guid RentalId { get; init; }
     public Guid BookId { get; init; }

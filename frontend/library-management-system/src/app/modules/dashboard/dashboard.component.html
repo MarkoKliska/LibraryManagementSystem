@@ -17,8 +17,6 @@
     </button>
   </div>
 
-  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-
   <div class="book-grid" *ngIf="viewMode === 'available' && availableBooks.length">
     <div class="book-card" *ngFor="let book of availableBooks">
       <h3>{{ book.title }}</h3>

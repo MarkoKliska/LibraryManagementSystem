@@ -5,4 +5,4 @@ using MediatR;
 namespace LibraryManagementSystem.Application.Features.Library.GetRentedBooks;
 
 public sealed record GetRentedBooksQuery(GetRentedBooksRequestDto Request)
-    : IRequest<Result<IEnumerable<RentedBookResponseDto>>>;
+    : IRequest<Result<IEnumerable<GetRentedBookResponseDto>>>;

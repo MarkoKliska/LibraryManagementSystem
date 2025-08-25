@@ -6,6 +6,8 @@ import { BookService } from '../../shared/services/book.service';
 import { LoaderService } from '../../shared/services/loader.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { CommonModule } from '@angular/common';
+import { RentBookRequest } from '../../shared/dto/requests/book/rent-book-request';
+import { ReturnBookRequest } from '../../shared/dto/requests/book/return-book-request';
 
 @Component({
   selector: 'app-dashboard',
@@ -74,10 +76,13 @@ export class DashboardComponent implements OnInit {
 
   rentBook(bookId: string): void {
     this.loaderService.startLoading();
-    this.bookService.rentBook({ bookId }).subscribe({
+    const request: RentBookRequest = {
+      bookId: bookId
+    }
+    this.bookService.rentBook(request).subscribe({
       next: (response) => {
         this.loaderService.stopLoading();
-        this.toastService.showSuccess(response.message, 'Success');
+        this.toastService.showSuccess(response.message || 'You have rented a book successfully.', 'Success');
         this.loadAvailableBooks();
         if (this.viewMode === 'rented') {
           this.loadRentedBooks();
@@ -93,10 +98,13 @@ export class DashboardComponent implements OnInit {
 
   returnBook(rentalId: string): void {
     this.loaderService.startLoading();
-    this.bookService.returnBook({ rentalId }).subscribe({
+    const request: ReturnBookRequest = {
+        rentalId: rentalId
+    }
+    this.bookService.returnBook(request).subscribe({
       next: (response) => {
         this.loaderService.stopLoading();
-        this.toastService.showSuccess(response.message, 'Success');
+        this.toastService.showSuccess(response.message || 'Book successfully returned.', 'Success');
         this.loadRentedBooks();
         if (this.viewMode === 'available') {
           this.loadAvailableBooks();

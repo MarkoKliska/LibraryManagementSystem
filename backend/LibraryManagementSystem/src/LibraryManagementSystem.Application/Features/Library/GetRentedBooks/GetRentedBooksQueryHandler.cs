@@ -7,16 +7,16 @@ namespace LibraryManagementSystem.Application.Features.Library.GetRentedBooks;
 
 public sealed class GetRentedBooksQueryHandler(
     IRentalRepository rentalRepository
-) : IRequestHandler<GetRentedBooksQuery, Result<IEnumerable<RentedBookResponseDto>>>
+) : IRequestHandler<GetRentedBooksQuery, Result<IEnumerable<GetRentedBookResponseDto>>>
 {
-    public async Task<Result<IEnumerable<RentedBookResponseDto>>> Handle(GetRentedBooksQuery query, CancellationToken ct)
+    public async Task<Result<IEnumerable<GetRentedBookResponseDto>>> Handle(GetRentedBooksQuery query, CancellationToken ct)
     {
         var rentals = await rentalRepository.GetActiveRentalsByUserAsync(query.Request.UserId, ct);
 
         if (!rentals.Any())
-            return Result<IEnumerable<RentedBookResponseDto>>.Success(Enumerable.Empty<RentedBookResponseDto>());
+            return Result<IEnumerable<GetRentedBookResponseDto>>.Success(Enumerable.Empty<GetRentedBookResponseDto>());
 
-        var result = rentals.Select(r => new RentedBookResponseDto
+        var result = rentals.Select(r => new GetRentedBookResponseDto
         {
             RentalId = r.Id,
             BookId = r.BookCopy.BookId,
@@ -31,6 +31,6 @@ public sealed class GetRentedBooksQueryHandler(
             BookCopyId = r.BookCopyId
         });
 
-        return Result<IEnumerable<RentedBookResponseDto>>.Success(result);
+        return Result<IEnumerable<GetRentedBookResponseDto>>.Success(result);
     }
 }

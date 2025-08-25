@@ -1,10 +1,12 @@
 ﻿using LibraryManagementSystem.Application.DTOs.Library.GetRentedBooks;
 using LibraryManagementSystem.Application.DTOs.Library.RentBook;
 using LibraryManagementSystem.Application.DTOs.Library.ReturnBook;
+using LibraryManagementSystem.Application.DTOs.Library.SearchBook;
 using LibraryManagementSystem.Application.Features.Library.GetAllBooksQuery;
 using LibraryManagementSystem.Application.Features.Library.GetRentedBooks;
 using LibraryManagementSystem.Application.Features.Library.RentBook;
 using LibraryManagementSystem.Application.Features.Library.ReturnBook;
+using LibraryManagementSystem.Application.Features.Library.SearchBook;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -78,6 +80,15 @@ public class BookController(
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
 
+        return Ok(result.Value);
+    }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchBooks([FromQuery] SearchBooksRequestDto request, CancellationToken ct)
+    {
+        var result = await mediator.Send(new SearchBooksQuery(request), ct);
+        if (!result.IsSuccess)
+            return BadRequest(new { error = result.Error });
         return Ok(result.Value);
     }
 }
