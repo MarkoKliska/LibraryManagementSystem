@@ -12,20 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './book-card.component.scss'
 })
 export class BookCardComponent {
-  @Input() book!: BookListResponse | RentedBookResponse;
-  @Input() viewMode!: 'available' | 'rented';
-  @Output() rent = new EventEmitter<string>();
-  @Output() return = new EventEmitter<string>();
-
-  isRentedBook(book: BookListResponse | RentedBookResponse): book is RentedBookResponse {
-    return this.viewMode === 'rented';
-  }
-
-  onAction(): void {
-    if (this.viewMode === 'available') {
-      this.rent.emit((this.book as BookListResponse).id);
-    } else {
-      this.return.emit((this.book as RentedBookResponse).rentalId);
-    }
-  }
+  @Input() book!: any;
+  @Input() type: 'available' | 'rented' = 'available';
+  @Output() action = new EventEmitter<string>();
 }

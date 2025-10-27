@@ -1,0 +1,8 @@
+<div class="search-container">
+  <input type="text" [(ngModel)]="title" placeholder="Search by title" (keyup.enter)="onSearch()">
+  <input type="text" [(ngModel)]="author" placeholder="Search by author" (keyup.enter)="onSearch()">
+  <input type="text" [(ngModel)]="genre" placeholder="Search by genre" (keyup.enter)="onSearch()">
+  <input type="text" [(ngModel)]="isbn" placeholder="Search by ISBN" (keyup.enter)="onSearch()">
+  
+  <button class="search-btn" (click)="onSearch()">Search</button>
+</div>

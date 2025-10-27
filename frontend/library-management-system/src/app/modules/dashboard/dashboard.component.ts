@@ -8,19 +8,27 @@ import { ToastService } from '../../shared/services/toast.service';
 import { CommonModule } from '@angular/common';
 import { RentBookRequest } from '../../shared/dto/requests/book/rent-book-request';
 import { ReturnBookRequest } from '../../shared/dto/requests/book/return-book-request';
+import { SearchBooksRequest } from '../../shared/dto/requests/book/search-book-request';
+import { SearchBooksResponse } from '../../shared/dto/responses/book/search-book-response';
+import { ViewToggleComponent } from './ui/view-toggle/view-toggle.component';
+import { BookCardComponent } from './ui/book-card/book-card.component';
+import { SearchComponent } from './ui/search/search.component';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     NavbarComponent,
-    CommonModule
+    CommonModule,
+    ViewToggleComponent,
+    BookCardComponent,
+    SearchComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
   viewMode: 'available' | 'rented' = 'available';
-  availableBooks: BookListResponse[] = [];
+  availableBooks: SearchBooksResponse[] = [];
   rentedBooks: RentedBookResponse[] = [];
   errorMessage: string | null = null;
 
@@ -45,8 +53,13 @@ export class DashboardComponent implements OnInit {
   }
 
   loadAvailableBooks(): void {
+    const emptyRequest: SearchBooksRequest = {};
+    this.onSearch(emptyRequest);
+  }
+
+  onSearch(request: SearchBooksRequest): void {
     this.loaderService.startLoading();
-    this.bookService.getAllBooks().subscribe({
+    this.bookService.searchBooks(request).subscribe({
       next: (books) => {
         this.availableBooks = books.filter(book => book.availableCopies > 0);
         this.loaderService.stopLoading();
@@ -76,9 +89,7 @@ export class DashboardComponent implements OnInit {
 
   rentBook(bookId: string): void {
     this.loaderService.startLoading();
-    const request: RentBookRequest = {
-      bookId: bookId
-    }
+    const request: RentBookRequest = { bookId };
     this.bookService.rentBook(request).subscribe({
       next: (response) => {
         this.loaderService.stopLoading();
@@ -98,9 +109,7 @@ export class DashboardComponent implements OnInit {
 
   returnBook(rentalId: string): void {
     this.loaderService.startLoading();
-    const request: ReturnBookRequest = {
-        rentalId: rentalId
-    }
+    const request: ReturnBookRequest = { rentalId };
     this.bookService.returnBook(request).subscribe({
       next: (response) => {
         this.loaderService.stopLoading();

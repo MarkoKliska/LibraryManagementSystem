@@ -6,23 +6,33 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 220px;
+  overflow: hidden;
+}
 
-  h3 {
+
+h3 {
     font-family: var(--font-montserrat);
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--text-color, #333);
     margin-bottom: 0.8rem;
-  }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-  p {
+p {
     font-family: var(--font-quicksand);
     font-size: 0.95rem;
     color: var(--text-color, #333);
     margin: 0.3rem 0;
-  }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-  .btn-action {
+.btn-action {
     margin-top: 1rem;
     padding: 0.6rem;
     border: none;
@@ -34,14 +44,13 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
+}
 
-    &:hover {
-      background: var(--secondary-color, #415E72);
-    }
+.btn-action:hover {
+    background: var(--secondary-color, #415E72);
+}
 
-    &:disabled {
-      background: var(--disabled, #9e9e9e);
-      cursor: not-allowed;
-    }
-  }
+.btn-action:disabled {
+    background: var(--disabled, #9e9e9e);
+    cursor: not-allowed;
 }

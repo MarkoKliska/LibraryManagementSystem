@@ -2,95 +2,25 @@
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
+}
 
-  .view-toggle {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
 
-    .toggle-btn {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      background: var(--secondary-color, #415E72);
-      color: var(--white-color, #fff);
-      font-family: var(--font-montserrat);
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0 0.5rem;
-      cursor: pointer;
-      transition: background 0.2s;
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2.5rem;
+  padding: 1rem;
+}
 
-      &.active {
-        background: var(--primary-color, #17313E);
-      }
-
-      &:hover:not(.active) {
-        background: var(--primary-color, #17313E);
-      }
-    }
-  }
-
-  .book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem;
-
-    .book-card {
-      background: var(--card-bg, #fff);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-
-      h3 {
-        font-family: var(--font-montserrat);
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--text-color, #333);
-        margin-bottom: 0.8rem;
-      }
-
-      p {
-        font-family: var(--font-quicksand);
-        font-size: 0.95rem;
-        color: var(--text-color, #333);
-        margin: 0.3rem 0;
-      }
-
-      .btn-action {
-        margin-top: 1rem;
-        padding: 0.6rem;
-        border: none;
-        border-radius: 8px;
-        background: var(--primary-color, #17313E);
-        color: var(--white-color, #fff);
-        font-family: var(--font-montserrat);
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s;
-
-        &:hover {
-          background: var(--secondary-color, #415E72);
-        }
-
-        &:disabled {
-          background: var(--disabled, #9e9e9e);
-          cursor: not-allowed;
-        }
-      }
-    }
-  }
-
-  .no-books {
-    text-align: center;
-    font-family: var(--font-quicksand);
-    font-size: 1.1rem;
-    color: var(--text-color, #333);
-    margin-top: 2rem;
-  }
+.no-books {
+  text-align: center;
+  font-family: var(--font-quicksand);
+  font-size: 1.1rem;
+  color: var(--text-color, #333);
+  margin-top: 2rem;
 }

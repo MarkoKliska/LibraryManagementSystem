@@ -1,40 +1,27 @@
 <app-navbar></app-navbar>
 <div class="dashboard-container">
-  <div class="view-toggle">
-    <button 
-      class="toggle-btn" 
-      [class.active]="viewMode === 'available'"
-      (click)="switchView('available')"
-    >
-      Available Books
-    </button>
-    <button 
-      class="toggle-btn" 
-      [class.active]="viewMode === 'rented'"
-      (click)="switchView('rented')"
-    >
-      My Rented Books
-    </button>
+  <app-view-toggle [viewMode]="viewMode" (modeChanged)="switchView($event)"></app-view-toggle>
+
+  <div class="search-wrapper" *ngIf="viewMode === 'available'">
+    <app-search (searchEvent)="onSearch($event)"></app-search>
   </div>
 
   <div class="book-grid" *ngIf="viewMode === 'available' && availableBooks.length">
-    <div class="book-card" *ngFor="let book of availableBooks">
-      <h3>{{ book.title }}</h3>
-      <p><strong>Author:</strong> {{ book.authorName }}</p>
-      <p><strong>Genre:</strong> {{ book.genreName }}</p>
-      <p><strong>Available:</strong> {{ book.availableCopies }} / {{ book.totalCopies }}</p>
-      <button class="btn-action" (click)="rentBook(book.id)">Rent</button>
-    </div>
+    <app-book-card 
+      *ngFor="let book of availableBooks" 
+      [book]="book" 
+      [type]="'available'" 
+      (action)="rentBook($event)"
+    ></app-book-card>
   </div>
 
   <div class="book-grid" *ngIf="viewMode === 'rented' && rentedBooks.length">
-    <div class="book-card" *ngFor="let book of rentedBooks">
-      <h3>{{ book.title }}</h3>
-      <p><strong>Author:</strong> {{ book.authorName }}</p>
-      <p><strong>Genre:</strong> {{ book.genreName }}</p>
-      <p><strong>Due Date:</strong> {{ book.dueDate | date:'mediumDate' }}</p>
-      <button class="btn-action" (click)="returnBook(book.rentalId)">Return</button>
-    </div>
+    <app-book-card 
+      *ngFor="let book of rentedBooks" 
+      [book]="book" 
+      [type]="'rented'" 
+      (action)="returnBook($event)"
+    ></app-book-card>
   </div>
 
   <div class="no-books" *ngIf="viewMode === 'available' && !availableBooks.length && !errorMessage">
