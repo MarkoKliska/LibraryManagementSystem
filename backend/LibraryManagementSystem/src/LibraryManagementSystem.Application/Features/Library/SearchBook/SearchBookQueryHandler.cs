@@ -9,7 +9,9 @@ public sealed class SearchBooksQueryHandler(
     IBookRepository bookRepository
 ) : IRequestHandler<SearchBooksQuery, Result<IEnumerable<SearchBooksResponseDto>>>
 {
-    public async Task<Result<IEnumerable<SearchBooksResponseDto>>> Handle(SearchBooksQuery query, CancellationToken ct)
+    public async Task<Result<IEnumerable<SearchBooksResponseDto>>> Handle(
+        SearchBooksQuery query,
+        CancellationToken ct)
     {
         var books = await bookRepository.SearchBooksAsync(
             query.Request.Title,
@@ -18,23 +20,26 @@ public sealed class SearchBooksQueryHandler(
             query.Request.Isbn13,
             ct);
 
-        var result = books.Select(b => new SearchBooksResponseDto
+        var result = books.Select(b =>
         {
-            Id = b.Book.Id,
-            Title = b.Book.Title,
-            AuthorName = b.Book.Author.FirstName != null
-                ? $"{b.Book.Author.LastName}, {b.Book.Author.FirstName}"
-                : b.Book.Author.LastName,
-            GenreName = b.Book.Genre.Name,
-            Isbn13 = b.Book.Isbn13,
-            TotalCopies = b.TotalCopies,
-            AvailableCopies = b.AvailableCopies,
-            RentedByUserId = b.Book.Copies
+            var activeRental = b.Book.Copies
                 .SelectMany(c => c.Rentals)
-                .FirstOrDefault(r => r.ReturnDate == null)?.UserId,
-            RentedByUserEmail = b.Book.Copies
-                .SelectMany(c => c.Rentals)
-                .FirstOrDefault(r => r.ReturnDate == null)?.User?.Email
+                .FirstOrDefault();
+
+            return new SearchBooksResponseDto
+            {
+                Id = b.Book.Id,
+                Title = b.Book.Title,
+                AuthorName = b.Book.Author.FirstName != null
+                    ? $"{b.Book.Author.LastName}, {b.Book.Author.FirstName}"
+                    : b.Book.Author.LastName,
+                GenreName = b.Book.Genre.Name,
+                Isbn13 = b.Book.Isbn13,
+                TotalCopies = b.TotalCopies,
+                AvailableCopies = b.AvailableCopies,
+                RentedByUserId = activeRental?.UserId,
+                RentedByUserEmail = activeRental?.User?.Email
+            };
         }).ToList();
 
         return Result<IEnumerable<SearchBooksResponseDto>>.Success(result);
