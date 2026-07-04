@@ -33,6 +33,10 @@
       color: var(--text-color, #333);
     }
 
+    td:last-child {
+      white-space: nowrap;
+    }
+
     button {
       padding: 0.5rem 1rem;
       margin-right: 0.5rem;
