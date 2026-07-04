@@ -20,11 +20,11 @@ public sealed class RentBookCommandHandler(
         if (!availableCopies.Any())
             return Result<RentBookResponseDto>.Failure("No available copies for this book.");
 
-        //var activeRentals = await rentalRepository.GetActiveRentalsByUserAsync(command.Request.UserId, ct);
-        //var hasActiveRental = activeRentals.Any(r => r.BookCopy.BookId == command.Request.BookId);
+        var activeRentals = await rentalRepository.GetActiveRentalsByUserAsync(command.Request.UserId, ct);
+        var hasActiveRental = activeRentals.Any(r => r.BookCopy.BookId == command.Request.BookId);
 
-        //if (hasActiveRental)
-        //    return Result<RentBookResponseDto>.Failure("You already have an active rental for this book. Please return it before renting again.");
+        if (hasActiveRental)
+            return Result<RentBookResponseDto>.Failure("You already have an active rental for this book. Please return it before renting again.");
 
         var bookCopy = availableCopies.First(); 
 
