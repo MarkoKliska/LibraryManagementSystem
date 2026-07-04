@@ -49,6 +49,7 @@ public class BookController(
         return Ok(result.Value);
     }
 
+    [Authorize(Roles = "User")]
     [HttpPost("rent")]
     public async Task<IActionResult> RentBook([FromBody] RentBookRequestDto request, CancellationToken ct)
     {
@@ -66,6 +67,7 @@ public class BookController(
         return Ok(result.Value);
     }
 
+    [Authorize(Roles = "User")]
     [HttpPost("return")]
     public async Task<IActionResult> ReturnBook([FromBody] ReturnBookRequestDto request, CancellationToken ct)
     {

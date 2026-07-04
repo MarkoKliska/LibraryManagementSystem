@@ -6,12 +6,13 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { profileRoutes } from './modules/user/features/profile-page/profile-page-routing.module';
 import { adminRoutes } from './modules/admin/admin-routing.module';
 import { AdminGuard } from './shared/guards/admin.guard';
+import { UserGuard } from './shared/guards/user.guard';
 
 export const routes: Routes = [
   { path: RouteNames.Landing, component: LandingPageComponent, canActivate: [NoAuthGuard] },
   { path: RouteNames.Login, loadComponent: () => import('./modules/user/features/login/login.component').then(m => m.LoginComponent), canActivate: [NoAuthGuard] },
   { path: RouteNames.Register, loadComponent: () => import('./modules/user/features/register/register.component').then(m => m.RegisterComponent), canActivate: [NoAuthGuard] },
-  { path: RouteNames.Dashboard, loadComponent: () => import('./modules/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate: [AuthGuard] },
+  { path: RouteNames.Dashboard, loadComponent: () => import('./modules/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate: [AuthGuard, UserGuard] },
   { 
     path: RouteNames.Profile, 
     children: profileRoutes,

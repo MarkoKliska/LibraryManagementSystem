@@ -59,7 +59,7 @@ export class LoginComponent {
       next: (response: LoginResponse) => {
         if (response.token) {
           this.authService.setToken(response.token);
-          this.router.navigate([RouteNames.Dashboard]);
+          this.router.navigate([this.authService.isAdmin() ? RouteNames.Admin : RouteNames.Dashboard]);
         }
         this.loaderService.stopLoading();
       },
