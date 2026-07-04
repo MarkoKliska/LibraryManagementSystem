@@ -1,1 +1,40 @@
 <app-navbar></app-navbar>
+
+<div class="dashboard-page">
+  <div class="dashboard-container">
+    <app-view-toggle
+      [viewMode]="viewMode"
+      (modeChanged)="switchView($event)">
+    </app-view-toggle>
+
+    <div class="search-wrapper" *ngIf="viewMode === 'available'">
+      <app-search (searchEvent)="onSearch($event)"></app-search>
+    </div>
+
+    <div class="book-grid" *ngIf="viewMode === 'available' && availableBooks.length">
+      <app-book-card
+        *ngFor="let book of availableBooks"
+        [book]="book"
+        [type]="'available'"
+        (action)="rentBook($event)">
+      </app-book-card>
+    </div>
+
+    <div class="book-grid" *ngIf="viewMode === 'rented' && rentedBooks.length">
+      <app-book-card
+        *ngFor="let book of rentedBooks"
+        [book]="book"
+        [type]="'rented'"
+        (action)="returnBook($event)">
+      </app-book-card>
+    </div>
+
+    <div class="no-books" *ngIf="viewMode === 'available' && !availableBooks.length && !errorMessage">
+      No available books at the moment.
+    </div>
+
+    <div class="no-books" *ngIf="viewMode === 'rented' && !rentedBooks.length && !errorMessage">
+      You haven't rented any books yet.
+    </div>
+  </div>
+</div>

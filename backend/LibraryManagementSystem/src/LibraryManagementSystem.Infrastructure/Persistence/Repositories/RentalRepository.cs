@@ -24,6 +24,10 @@ public class RentalRepository(
             .Include(r => r.User)
             .Include(r => r.BookCopy)
             .ThenInclude(c => c.Book)
+            .ThenInclude(b => b.Author)
+            .Include(r => r.BookCopy)
+            .ThenInclude(c => c.Book)
+            .ThenInclude(b => b.Genre)
             .Where(r => r.UserId == userId && r.ReturnDate == null)
             .ToListAsync(cancellationToken);
     }

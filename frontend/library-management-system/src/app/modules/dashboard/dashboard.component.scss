@@ -1,0 +1,33 @@
+.dashboard-page {
+  min-height: calc(100vh - 64px);
+  background-color: var(--accent-color);
+  padding: 2rem 0;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2.5rem;
+  padding: 1rem;
+}
+
+.no-books {
+  text-align: center;
+  font-family: var(--font-quicksand);
+  font-size: 1.1rem;
+  color: var(--text-color, #333);
+  margin-top: 2rem;
+}

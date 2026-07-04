@@ -4,7 +4,7 @@
     --primary-color: #17313E;
     --secondary-color: #415E72;
     --tercial-color: #C5B0CD;
-    --accent-color: #F3E2D4;
+    --accent-color: hsl(27, 56%, 89%);
     
     --black-color: #000;
     --white-color: #fff;
@@ -17,5 +17,5 @@
 
 body {
     font-family: var(--font-montserrat) !important;
-    background-color: var(--dark-color) !important;
+    background-color: var(--primary-color) !important;
 }
