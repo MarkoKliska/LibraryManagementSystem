@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/LibraryManagementSystem.Api/LibraryManagementSystem.Api.csproj" />
+  <Project Path="src/LibraryManagementSystem.Application/LibraryManagementSystem.Application.csproj" />
+  <Project Path="src/LibraryManagementSystem.Domain/LibraryManagementSystem.Domain.csproj" />
+  <Project Path="src/LibraryManagementSystem.Infrastructure/LibraryManagementSystem.Infrastructure.csproj" />
+</Solution>

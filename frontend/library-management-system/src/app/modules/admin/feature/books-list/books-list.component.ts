@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BookListResponse } from '../../../../shared/dto/responses/admin/book-list-response';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
@@ -10,10 +10,9 @@ import { DeleteBookResponse } from '../../../../shared/dto/responses/admin/delet
 
 @Component({
   selector: 'app-books-list',
-  imports: [
-    CommonModule
-  ],
+  imports: [],
   templateUrl: './books-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './books-list.component.scss'
 })
 export class BooksListComponent implements OnInit {

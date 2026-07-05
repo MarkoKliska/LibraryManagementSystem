@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddAuthorResponse } from '../../../../shared/dto/responses/admin/add-author-response';
 import { AddGenreResponse } from '../../../../shared/dto/responses/admin/add-genre-response';
@@ -11,10 +11,10 @@ import { AddBookRequest } from '../../../../shared/dto/requests/admin/add-book-r
 @Component({
   selector: 'app-add-book',
   imports: [
-    CommonModule,
     ReactiveFormsModule
-  ],
+],
   templateUrl: './add-book.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './add-book.component.scss'
 })
 export class AddBookComponent implements OnInit {

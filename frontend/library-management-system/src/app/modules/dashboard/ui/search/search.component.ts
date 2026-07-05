@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { SearchBooksRequest } from '../../../../shared/dto/requests/book/search-book-request';
 import { FormsModule } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   templateUrl: './search.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search.component.scss'
 })
 export class SearchComponent {

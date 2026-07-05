@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AddAuthorRequest } from '../../../../shared/dto/requests/admin/add-author-request';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { CommonModule } from '@angular/common';
+
 import { AddAuthorResponse } from '../../../../shared/dto/responses/admin/add-author-response';
 import { DeleteAuthorRequest } from '../../../../shared/dto/requests/admin/delete-author-request';
 
 @Component({
   selector: 'app-add-author',
   imports: [
-    CommonModule,
     ReactiveFormsModule
-  ],
+],
   templateUrl: './authors.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './authors.component.scss'
 })
 export class AuthorsComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EditBookRequest } from '../../../../shared/dto/requests/admin/edit-book-request';
 import { AddAuthorResponse } from '../../../../shared/dto/responses/admin/add-author-response';
 import { AddGenreResponse } from '../../../../shared/dto/responses/admin/add-genre-response';
@@ -7,16 +7,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { AddBookResponse } from '../../../../shared/dto/responses/admin/add-book-response';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-book',
   imports: [
-    CommonModule,
     FormsModule
-  ],
+],
   templateUrl: './edit-book.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-book.component.scss'
 })
 export class EditBookComponent {

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
@@ -11,10 +11,10 @@ import { DeleteGenreRequest } from '../../../../shared/dto/requests/admin/delete
 @Component({
   selector: 'app-add-genre',
   imports: [
-    CommonModule,
     ReactiveFormsModule
-  ],
+],
   templateUrl: './genres.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './genres.component.scss'
 })
 export class GenresComponent implements OnInit {

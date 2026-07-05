@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../shared/services/user.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { CreateUserRequest } from '../../../../shared/dto/requests/user/create-user-request';
 import { RouteNames } from '../../../../shared/consts/routes';
-import { CommonModule } from '@angular/common';
+
 import { ToastService } from '../../../../shared/services/toast.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-register',
   imports: [
-    ReactiveFormsModule,
-    CommonModule
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './register.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {

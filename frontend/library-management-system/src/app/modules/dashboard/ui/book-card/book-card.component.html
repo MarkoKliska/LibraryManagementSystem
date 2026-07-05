@@ -1,13 +1,13 @@
 <div class="book-card">
-    <h3>{{ book.title }}</h3>
-    <p><strong>Author:</strong> {{ book.authorName }}</p>
-    <p><strong>Genre:</strong> {{ book.genreName }}</p>
-    <ng-container *ngIf="type === 'available'">
-        <p><strong>Available:</strong> {{ book.availableCopies }} / {{ book.totalCopies }}</p>
-        <button class="btn-action" (click)="action.emit(book.id)">Rent</button>
-    </ng-container>
-    <ng-container *ngIf="type === 'rented'">
-        <p><strong>Due Date:</strong> {{ book.dueDate | date:'mediumDate' }}</p>
-        <button class="btn-action" (click)="action.emit(book.rentalId)">Return</button>
-    </ng-container>
+  <h3>{{ book.title }}</h3>
+  <p><strong>Author:</strong> {{ book.authorName }}</p>
+  <p><strong>Genre:</strong> {{ book.genreName }}</p>
+  @if (type === 'available') {
+    <p><strong>Available:</strong> {{ book.availableCopies }} / {{ book.totalCopies }}</p>
+    <button class="btn-action" (click)="action.emit(book.id)">Rent</button>
+  }
+  @if (type === 'rented') {
+    <p><strong>Due Date:</strong> {{ book.dueDate | date:'mediumDate' }}</p>
+    <button class="btn-action" (click)="action.emit(book.rentalId)">Return</button>
+  }
 </div>

@@ -5,10 +5,14 @@
   </div>
 
   <div class="links">
-    <button *ngIf="!isAdmin" (click)="goToDashboard()">Dashboard</button>
+    @if (!isAdmin) {
+      <button (click)="goToDashboard()">Dashboard</button>
+    }
     <button (click)="goToProfile()">My Profile</button>
 
-    <button *ngIf="isAdmin" (click)="goToAdminPanel()">Admin Panel</button>
+    @if (isAdmin) {
+      <button (click)="goToAdminPanel()">Admin Panel</button>
+    }
 
     <button (click)="logout()">Logout</button>
   </div>

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../shared/ui/navbar/navbar.component';
 import { RentedBookResponse } from '../../shared/dto/responses/book/rented-book-response';
 import { BookListResponse } from '../../shared/dto/responses/book/book-list-response';
 import { BookService } from '../../shared/services/book.service';
 import { LoaderService } from '../../shared/services/loader.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { CommonModule } from '@angular/common';
+
 import { RentBookRequest } from '../../shared/dto/requests/book/rent-book-request';
 import { ReturnBookRequest } from '../../shared/dto/requests/book/return-book-request';
 import { SearchBooksRequest } from '../../shared/dto/requests/book/search-book-request';
@@ -18,12 +18,12 @@ import { SearchComponent } from './ui/search/search.component';
   selector: 'app-dashboard',
   imports: [
     NavbarComponent,
-    CommonModule,
     ViewToggleComponent,
     BookCardComponent,
     SearchComponent
-  ],
+],
   templateUrl: './dashboard.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
