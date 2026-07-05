@@ -1,45 +1,50 @@
 <div class="add-genre-card">
   <h2>Manage Genres</h2>
-  
+
   <h3>Add New Genre</h3>
   <form [formGroup]="addGenreForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Genre Name</label>
-      <input 
-        id="name" 
-        type="text" 
+      <input
+        id="name"
+        type="text"
         formControlName="name"
         [class.invalid]="f['name'].invalid && (f['name'].dirty || f['name'].touched)"
-      />
-      <div class="error" *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)">
-        Genre name is required.
+        />
+        @if (f['name'].invalid && (f['name'].dirty || f['name'].touched)) {
+          <div class="error">
+            Genre name is required.
+          </div>
+        }
       </div>
-    </div>
-    <button type="submit" class="btn-submit" [disabled]="isSubmitting || addGenreForm.invalid">
-      {{ isSubmitting ? 'Adding...' : 'Add Genre' }}
-    </button>
-  </form>
+      <button type="submit" class="btn-submit" [disabled]="isSubmitting || addGenreForm.invalid">
+        {{ isSubmitting ? 'Adding...' : 'Add Genre' }}
+      </button>
+    </form>
 
-  <h3>Genres List</h3>
-  <div class="genres-list" *ngIf="genres.length; else noGenres">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let genre of genres">
-          <td>{{ genre.name }}</td>
-          <td>
-            <button (click)="deleteGenre(genre.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <h3>Genres List</h3>
+    @if (genres.length) {
+      <div class="genres-list">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (genre of genres; track genre) {
+              <tr>
+                <td>{{ genre.name }}</td>
+                <td>
+                  <button (click)="deleteGenre(genre.id)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p>No genres found.</p>
+    }
   </div>
-  <ng-template #noGenres>
-    <p>No genres found.</p>
-  </ng-template>
-</div>

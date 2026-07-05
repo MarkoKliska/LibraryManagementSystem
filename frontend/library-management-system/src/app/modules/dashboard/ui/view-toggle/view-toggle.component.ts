@@ -1,11 +1,9 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-view-toggle',
-  imports: [
-    CommonModule
-  ],
+  imports: [],
   templateUrl: './view-toggle.component.html',
   styleUrl: './view-toggle.component.scss'
 })

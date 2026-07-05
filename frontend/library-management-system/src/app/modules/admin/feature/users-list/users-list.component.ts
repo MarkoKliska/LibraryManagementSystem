@@ -4,13 +4,11 @@ import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-users-list',
-  imports: [
-    CommonModule
-  ],
+  imports: [],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'
 })

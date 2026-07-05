@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../../shared/ui/navbar/navbar.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-admin-page',
   imports: [
     NavbarComponent,
     RouterOutlet,
-    CommonModule,
     RouterLink,
     RouterLinkActive
-  ],
+],
   templateUrl: './admin-page.component.html',
   styleUrl: './admin-page.component.scss'
 })

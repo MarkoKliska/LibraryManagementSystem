@@ -4,16 +4,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { CommonModule } from '@angular/common';
+
 import { AddAuthorResponse } from '../../../../shared/dto/responses/admin/add-author-response';
 import { DeleteAuthorRequest } from '../../../../shared/dto/requests/admin/delete-author-request';
 
 @Component({
   selector: 'app-add-author',
   imports: [
-    CommonModule,
     ReactiveFormsModule
-  ],
+],
   templateUrl: './authors.component.html',
   styleUrl: './authors.component.scss'
 })

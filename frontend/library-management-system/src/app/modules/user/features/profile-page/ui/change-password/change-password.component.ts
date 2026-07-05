@@ -4,14 +4,13 @@ import { UserService } from '../../../../../../shared/services/user.service';
 import { LoaderService } from '../../../../../../shared/services/loader.service';
 import { ToastService } from '../../../../../../shared/services/toast.service';
 import { ChangePasswordRequest } from '../../../../../../shared/dto/requests/user/change-password-request';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-change-password',
   imports: [
-    ReactiveFormsModule,
-    CommonModule
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })

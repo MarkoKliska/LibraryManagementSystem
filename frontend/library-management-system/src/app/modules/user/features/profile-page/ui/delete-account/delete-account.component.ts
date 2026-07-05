@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../../../shared/services/user.service';
@@ -12,9 +12,8 @@ import { RouteNames } from '../../../../../../shared/consts/routes';
 @Component({
   selector: 'app-delete-account',
   imports: [
-    ReactiveFormsModule,
-    CommonModule
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './delete-account.component.html',
   styleUrl: './delete-account.component.scss'
 })

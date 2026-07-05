@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../../../shared/services/user.service';
 import { SaveUserChangesRequest } from '../../../../../../shared/dto/requests/user/save-user-changes-request';
-import { CommonModule } from '@angular/common';
+
 import { GetUserResponse } from '../../../../../../shared/dto/responses/user/get-user-response';
 import { LoaderService } from '../../../../../../shared/services/loader.service';
 import { ToastService } from '../../../../../../shared/services/toast.service';
@@ -10,9 +10,8 @@ import { ToastService } from '../../../../../../shared/services/toast.service';
 @Component({
   selector: 'app-general-information',
   imports: [
-    ReactiveFormsModule,
-    CommonModule
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './general-information.component.html',
   styleUrl: './general-information.component.scss'
 })

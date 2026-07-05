@@ -7,15 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { AddBookResponse } from '../../../../shared/dto/responses/admin/add-book-response';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-book',
   imports: [
-    CommonModule,
     FormsModule
-  ],
+],
   templateUrl: './edit-book.component.html',
   styleUrl: './edit-book.component.scss'
 })

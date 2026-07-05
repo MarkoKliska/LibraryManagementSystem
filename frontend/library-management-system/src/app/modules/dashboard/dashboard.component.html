@@ -7,34 +7,46 @@
       (modeChanged)="switchView($event)">
     </app-view-toggle>
 
-    <div class="search-wrapper" *ngIf="viewMode === 'available'">
-      <app-search (searchEvent)="onSearch($event)"></app-search>
-    </div>
+    @if (viewMode === 'available') {
+      <div class="search-wrapper">
+        <app-search (searchEvent)="onSearch($event)"></app-search>
+      </div>
+    }
 
-    <div class="book-grid" *ngIf="viewMode === 'available' && availableBooks.length">
-      <app-book-card
-        *ngFor="let book of availableBooks"
-        [book]="book"
-        [type]="'available'"
-        (action)="rentBook($event)">
-      </app-book-card>
-    </div>
+    @if (viewMode === 'available' && availableBooks.length) {
+      <div class="book-grid">
+        @for (book of availableBooks; track book) {
+          <app-book-card
+            [book]="book"
+            [type]="'available'"
+            (action)="rentBook($event)">
+          </app-book-card>
+        }
+      </div>
+    }
 
-    <div class="book-grid" *ngIf="viewMode === 'rented' && rentedBooks.length">
-      <app-book-card
-        *ngFor="let book of rentedBooks"
-        [book]="book"
-        [type]="'rented'"
-        (action)="returnBook($event)">
-      </app-book-card>
-    </div>
+    @if (viewMode === 'rented' && rentedBooks.length) {
+      <div class="book-grid">
+        @for (book of rentedBooks; track book) {
+          <app-book-card
+            [book]="book"
+            [type]="'rented'"
+            (action)="returnBook($event)">
+          </app-book-card>
+        }
+      </div>
+    }
 
-    <div class="no-books" *ngIf="viewMode === 'available' && !availableBooks.length && !errorMessage">
-      No available books at the moment.
-    </div>
+    @if (viewMode === 'available' && !availableBooks.length && !errorMessage) {
+      <div class="no-books">
+        No available books at the moment.
+      </div>
+    }
 
-    <div class="no-books" *ngIf="viewMode === 'rented' && !rentedBooks.length && !errorMessage">
-      You haven't rented any books yet.
-    </div>
+    @if (viewMode === 'rented' && !rentedBooks.length && !errorMessage) {
+      <div class="no-books">
+        You haven't rented any books yet.
+      </div>
+    }
   </div>
 </div>

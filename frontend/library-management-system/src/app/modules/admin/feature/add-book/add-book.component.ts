@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddAuthorResponse } from '../../../../shared/dto/responses/admin/add-author-response';
@@ -11,9 +11,8 @@ import { AddBookRequest } from '../../../../shared/dto/requests/admin/add-book-r
 @Component({
   selector: 'app-add-book',
   imports: [
-    CommonModule,
     ReactiveFormsModule
-  ],
+],
   templateUrl: './add-book.component.html',
   styleUrl: './add-book.component.scss'
 })

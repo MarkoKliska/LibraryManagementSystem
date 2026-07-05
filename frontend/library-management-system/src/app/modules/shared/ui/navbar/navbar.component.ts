@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { RouteNames } from '../../../../shared/consts/routes';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-navbar',
-  imports: [
-    CommonModule
-  ],
+  imports: [],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })

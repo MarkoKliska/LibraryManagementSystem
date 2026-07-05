@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../shared/services/user.service';
@@ -13,9 +13,8 @@ import { ToastService } from '../../../../shared/services/toast.service';
 @Component({
   selector: 'app-login',
   imports: [
-    ReactiveFormsModule,
-    CommonModule
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

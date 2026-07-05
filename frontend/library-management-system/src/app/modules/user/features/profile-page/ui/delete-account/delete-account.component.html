@@ -5,19 +5,21 @@
   <form [formGroup]="deleteAccountForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="password">Confirm Password</label>
-      <input 
+      <input
         id="password"
         type="password"
         formControlName="password"
         [class.invalid]="f['password'].invalid && (f['password'].dirty || f['password'].touched)"
-      />
-      <div class="error" *ngIf="f['password'].invalid && (f['password'].dirty || f['password'].touched)">
-        Password is required.
+        />
+        @if (f['password'].invalid && (f['password'].dirty || f['password'].touched)) {
+          <div class="error">
+            Password is required.
+          </div>
+        }
       </div>
-    </div>
 
-    <button type="submit" class="btn-submit danger" [disabled]="isSubmitting || deleteAccountForm.invalid">
-      {{ isSubmitting ? 'Deleting...' : 'Delete Account' }}
-    </button>
-  </form>
-</div>
+      <button type="submit" class="btn-submit danger" [disabled]="isSubmitting || deleteAccountForm.invalid">
+        {{ isSubmitting ? 'Deleting...' : 'Delete Account' }}
+      </button>
+    </form>
+  </div>
