@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../../shared/services/loader.service';
 
@@ -16,6 +16,7 @@ import { LoaderService } from '../../../shared/services/loader.service';
       </div>
     }
     `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./loader.component.scss']
 })
 export class AppLoaderComponent {

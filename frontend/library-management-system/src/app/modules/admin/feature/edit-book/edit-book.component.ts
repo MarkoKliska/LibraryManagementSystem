@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EditBookRequest } from '../../../../shared/dto/requests/admin/edit-book-request';
 import { AddAuthorResponse } from '../../../../shared/dto/responses/admin/add-author-response';
 import { AddGenreResponse } from '../../../../shared/dto/responses/admin/add-genre-response';
@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule
 ],
   templateUrl: './edit-book.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-book.component.scss'
 })
 export class EditBookComponent {

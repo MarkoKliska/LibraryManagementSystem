@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../../../shared/services/user.service';
 import { LoaderService } from '../../../../../../shared/services/loader.service';
@@ -12,6 +12,7 @@ import { ChangePasswordRequest } from '../../../../../../shared/dto/requests/use
     ReactiveFormsModule
 ],
   templateUrl: './change-password.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserListResponse } from '../../../../shared/dto/responses/admin/user-list-response';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-users-list',
   imports: [],
   templateUrl: './users-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './users-list.component.scss'
 })
 export class UsersListComponent implements OnInit {

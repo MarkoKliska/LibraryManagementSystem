@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../../../shared/services/user.service';
 import { LoaderService } from '../../../../../../shared/services/loader.service';
@@ -15,6 +15,7 @@ import { RouteNames } from '../../../../../../shared/consts/routes';
     ReactiveFormsModule
 ],
   templateUrl: './delete-account.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './delete-account.component.scss'
 })
 export class DeleteAccountComponent {

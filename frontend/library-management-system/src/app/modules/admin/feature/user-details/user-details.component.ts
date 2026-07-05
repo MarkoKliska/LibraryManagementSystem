@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserDetailsResponse } from '../../../../shared/dto/responses/admin/user-details-response';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +15,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
     ReactiveFormsModule
   ],
   templateUrl: './user-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-details.component.scss'
 })
 export class UserDetailsComponent implements OnInit {

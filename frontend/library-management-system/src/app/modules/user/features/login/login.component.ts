@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../shared/services/user.service';
 import { AuthService } from '../../../../shared/services/auth.service';
@@ -16,6 +16,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
     ReactiveFormsModule
 ],
   templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AddAuthorRequest } from '../../../../shared/dto/requests/admin/add-author-request';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminService } from '../../../../shared/services/admin.service';
@@ -14,6 +14,7 @@ import { DeleteAuthorRequest } from '../../../../shared/dto/requests/admin/delet
     ReactiveFormsModule
 ],
   templateUrl: './authors.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './authors.component.scss'
 })
 export class AuthorsComponent implements OnInit {

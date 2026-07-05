@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { RouteNames } from '../../../../shared/consts/routes';
@@ -8,6 +8,7 @@ import { RouteNames } from '../../../../shared/consts/routes';
   selector: 'app-navbar',
   imports: [],
   templateUrl: './navbar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {

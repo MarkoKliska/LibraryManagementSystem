@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../shared/ui/navbar/navbar.component';
 import { RentedBookResponse } from '../../shared/dto/responses/book/rented-book-response';
 import { BookListResponse } from '../../shared/dto/responses/book/book-list-response';
@@ -23,6 +23,7 @@ import { SearchComponent } from './ui/search/search.component';
     SearchComponent
 ],
   templateUrl: './dashboard.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
