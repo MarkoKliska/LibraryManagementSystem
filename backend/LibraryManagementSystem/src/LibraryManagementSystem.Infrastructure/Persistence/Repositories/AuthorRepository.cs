@@ -25,7 +25,7 @@ public class AuthorRepository(
         return await context.Authors.AnyAsync(
             a => !a.IsDeleted &&
                  a.LastName.ToLower() == lastName.ToLower().Trim() &&
-                 (string.IsNullOrEmpty(firstName) || a.FirstName.ToLower() == firstName.ToLower().Trim()),
+                 (string.IsNullOrEmpty(firstName) || a.FirstName!.ToLower() == firstName.ToLower().Trim()),
             cancellationToken
         );
     }
