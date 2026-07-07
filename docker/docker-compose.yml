@@ -1,4 +1,4 @@
-version: '3.8'
+name: library-system
 
 services:
   postgres:
@@ -29,6 +29,23 @@ services:
       - postgres
     networks:
       - library_network
+  
+  api:
+    build:
+      context: ../backend/LibraryManagementSystem
+      dockerfile: src/Api/LibraryManagementSystem.Api/Dockerfile
+    container_name: library_api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: ${DB_CONNECTION}
+      Jwt__Key: ${JWT_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - library_network  
 
 volumes:
   postgres_data:
