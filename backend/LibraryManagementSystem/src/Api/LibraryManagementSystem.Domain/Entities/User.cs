@@ -1,10 +1,13 @@
-﻿namespace LibraryManagementSystem.Domain.Entities;
+﻿using LibraryManagementSystem.Domain.Events;
+using LibraryManagementSystem.Domain.Common.BaseEntity;
+
+namespace LibraryManagementSystem.Domain.Entities;
 public enum UserRole
 {
     User = 0,
     Admin = 1
 }
-public class User
+public class User : BaseEntity
 {
     public Guid Id { get; private set; }
 
@@ -29,6 +32,7 @@ public class User
         PasswordHash = passwordHash;
         Role = role;
         IsDeleted = false;
+        AddDomainEvent(new UserRegisteredDomainEvent(Id, Email, FirstName));
     }
 
     public void SetRole(UserRole role)

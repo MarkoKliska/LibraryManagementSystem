@@ -10,7 +10,8 @@ namespace LibraryManagementSystem.Application.Features.Library.RentBook;
 public sealed class RentBookCommandHandler(
     IBookCopyRepository bookCopyRepository,
     IRentalRepository rentalRepository,
-    IUnitOfWork unitOfWork 
+    IUnitOfWork unitOfWork, 
+    IDomainEventDispatcher domainEventDispatcher
 ) : IRequestHandler<RentBookCommand, Result<RentBookResponseDto>>
 {
     public async Task<Result<RentBookResponseDto>> Handle(RentBookCommand command, CancellationToken ct)
@@ -31,7 +32,8 @@ public sealed class RentBookCommandHandler(
         var rental = new Rental(command.Request.UserId, bookCopy.Id);
 
         await rentalRepository.AddAsync(rental, ct);
-        await unitOfWork.SaveChangesAsync(ct); 
+        await unitOfWork.SaveChangesAsync(ct);
+        await domainEventDispatcher.DispatchEventsAsync(ct);
 
         return Result<RentBookResponseDto>.Success(new RentBookResponseDto
         {

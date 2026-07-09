@@ -12,7 +12,8 @@ namespace LibraryManagementSystem.Application.Features.User.CreateUser;
 public sealed class CreateUserCommandHandler(
     IUserRepository users,
     IUnitOfWork uow,
-    IJwtTokenService jwtService
+    IJwtTokenService jwtService,
+    IDomainEventDispatcher domainEventDispatcher
 )
     : IRequestHandler<CreateUserCommand, Result<CreateUserResponseDto>>
 {
@@ -42,6 +43,7 @@ public sealed class CreateUserCommandHandler(
 
         await users.AddAsync(user, ct);
         await uow.SaveChangesAsync(ct);
+        await domainEventDispatcher.DispatchEventsAsync(ct);
 
         var token = jwtService.GenerateToken(user.Id, user.Email, user.Role);
 

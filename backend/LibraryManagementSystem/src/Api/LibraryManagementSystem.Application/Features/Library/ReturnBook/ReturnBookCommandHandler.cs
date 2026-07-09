@@ -8,7 +8,8 @@ namespace LibraryManagementSystem.Application.Features.Library.ReturnBook;
 
 public sealed class ReturnBookCommandHandler(
     IRentalRepository rentalRepository,
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    IDomainEventDispatcher domainEventDispatcher
 ) : IRequestHandler<ReturnBookCommand, Result<ReturnBookResponseDto>>
 {
     public async Task<Result<ReturnBookResponseDto>> Handle(ReturnBookCommand command, CancellationToken ct)
@@ -26,6 +27,7 @@ public sealed class ReturnBookCommandHandler(
 
         rental.SetReturned();
         await unitOfWork.SaveChangesAsync(ct);
+        await domainEventDispatcher.DispatchEventsAsync(ct);
 
         return Result<ReturnBookResponseDto>.Success(new ReturnBookResponseDto());
     }

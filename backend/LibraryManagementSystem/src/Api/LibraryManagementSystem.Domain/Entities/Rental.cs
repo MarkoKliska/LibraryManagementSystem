@@ -1,21 +1,17 @@
-﻿namespace LibraryManagementSystem.Domain.Entities;
+﻿using LibraryManagementSystem.Domain.Common.BaseEntity;
+using LibraryManagementSystem.Domain.Events;
 
-public class Rental
+namespace LibraryManagementSystem.Domain.Entities;
+
+public class Rental : BaseEntity
 {
     public Guid Id { get; private set; }
-
     public Guid UserId { get; private set; }
-
     public Guid BookCopyId { get; private set; }
-
     public DateTime RentalDate { get; private set; }
-
     public DateTime DueDate { get; private set; }
-
     public DateTime? ReturnDate { get; private set; }
-
     public User User { get; private set; } = default!;
-
     public BookCopy BookCopy { get; private set; } = default!;
 
     public Rental() { }
@@ -28,6 +24,8 @@ public class Rental
         RentalDate = DateTime.UtcNow;
         DueDate = RentalDate.AddDays(30);
         ReturnDate = null;
+
+        AddDomainEvent(new BookRentedDomainEvent(Id, UserId, BookCopyId, DueDate));
     }
 
     public void SetReturned()
@@ -35,5 +33,7 @@ public class Rental
         if (ReturnDate != null)
             throw new InvalidOperationException("Book is already returned.");
         ReturnDate = DateTime.UtcNow;
+
+        AddDomainEvent(new BookReturnedDomainEvent(Id, UserId, BookCopyId));
     }
 }

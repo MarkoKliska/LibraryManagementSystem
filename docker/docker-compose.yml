@@ -40,12 +40,34 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: ${DB_CONNECTION}
       Jwt__Key: ${JWT_KEY}
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD}
     ports:
       - "8080:8080"
     depends_on:
       - postgres
+      - rabbitmq
     networks:
-      - library_network  
+      - library_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: library_rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - library_network
 
 volumes:
   postgres_data:
