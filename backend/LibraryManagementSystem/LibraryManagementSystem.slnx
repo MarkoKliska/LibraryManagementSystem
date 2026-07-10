@@ -8,5 +8,6 @@
   </Folder>
   <Folder Name="/src/Mail.Service/">
     <Project Path="src/Mail.Service/LibraryManagementSystem.Contracts/LibraryManagementSystem.Contracts.csproj" />
+    <Project Path="src/Mail.Service/LibraryManagementSystem.MailService/LibraryManagementSystem.MailService.csproj" />
   </Folder>
 </Solution>
