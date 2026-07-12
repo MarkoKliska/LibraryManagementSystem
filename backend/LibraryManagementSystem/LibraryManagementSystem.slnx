@@ -1,6 +1,13 @@
 <Solution>
-  <Project Path="src/LibraryManagementSystem.Api/LibraryManagementSystem.Api.csproj" />
-  <Project Path="src/LibraryManagementSystem.Application/LibraryManagementSystem.Application.csproj" />
-  <Project Path="src/LibraryManagementSystem.Domain/LibraryManagementSystem.Domain.csproj" />
-  <Project Path="src/LibraryManagementSystem.Infrastructure/LibraryManagementSystem.Infrastructure.csproj" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Api/">
+    <Project Path="src/Api/LibraryManagementSystem.Api/LibraryManagementSystem.Api.csproj" />
+    <Project Path="src/Api/LibraryManagementSystem.Application/LibraryManagementSystem.Application.csproj" />
+    <Project Path="src/Api/LibraryManagementSystem.Domain/LibraryManagementSystem.Domain.csproj" />
+    <Project Path="src/Api/LibraryManagementSystem.Infrastructure/LibraryManagementSystem.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Mail.Service/">
+    <Project Path="src/Mail.Service/LibraryManagementSystem.Contracts/LibraryManagementSystem.Contracts.csproj" />
+    <Project Path="src/Mail.Service/LibraryManagementSystem.MailService/LibraryManagementSystem.MailService.csproj" />
+  </Folder>
 </Solution>

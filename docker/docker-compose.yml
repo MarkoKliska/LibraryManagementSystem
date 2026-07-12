@@ -1,4 +1,4 @@
-version: '3.8'
+name: library-system
 
 services:
   postgres:
@@ -27,6 +27,76 @@ services:
       - "5050:80"
     depends_on:
       - postgres
+    networks:
+      - library_network
+  
+  api:
+    build:
+      context: ../backend/LibraryManagementSystem
+      dockerfile: src/Api/LibraryManagementSystem.Api/Dockerfile
+    container_name: library_api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: ${DB_CONNECTION}
+      Jwt__Key: ${JWT_KEY}
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - library_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: library_rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - library_network
+    
+  mailhog:
+    image: mailhog/mailhog
+    container_name: library_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - library_network
+
+  mailservice:
+    build:
+      context: ../backend/LibraryManagementSystem
+      dockerfile: src/Mail.Service/LibraryManagementSystem.MailService/Dockerfile
+    container_name: library_mailservice
+    restart: unless-stopped
+    environment:
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD}
+      Smtp__Host: ${SMTP_HOST}
+      Smtp__Port: ${SMTP_PORT}
+      Smtp__Username: ${SMTP_USERNAME}
+      Smtp__Password: ${SMTP_PASSWORD}
+      Smtp__FromAddress: ${SMTP_FROM_ADDRESS}
+      Smtp__FromName: Library Management System
+    depends_on:
+      - rabbitmq
     networks:
       - library_network
 
