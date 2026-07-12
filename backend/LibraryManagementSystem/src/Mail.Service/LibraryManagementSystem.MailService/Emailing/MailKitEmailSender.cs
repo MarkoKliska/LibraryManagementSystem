@@ -15,6 +15,8 @@ public sealed class MailKitEmailSender(IConfiguration configuration) : IEmailSen
         var host = configuration["Smtp:Host"]
             ?? throw new InvalidOperationException("Smtp:Host is not configured");
         var port = int.Parse(configuration["Smtp:Port"] ?? "25");
+        var username = configuration["Smtp:Username"];
+        var password = configuration["Smtp:Password"];
 
         var mimeMessage = new MimeMessage();
         mimeMessage.From.Add(new MailboxAddress(fromName, fromAddress));
@@ -24,6 +26,11 @@ public sealed class MailKitEmailSender(IConfiguration configuration) : IEmailSen
 
         using var client = new SmtpClient();
         await client.ConnectAsync(host, port, SecureSocketOptions.Auto, cancellationToken);
+
+        if (!string.IsNullOrEmpty(username))
+        {
+            await client.AuthenticateAsync(username, password, cancellationToken);
+        }
         try
         {
             await client.SendAsync(mimeMessage, cancellationToken);

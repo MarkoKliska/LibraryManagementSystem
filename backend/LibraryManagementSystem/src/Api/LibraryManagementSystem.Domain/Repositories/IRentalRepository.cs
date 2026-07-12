@@ -8,4 +8,5 @@ public interface IRentalRepository
     Task<IEnumerable<Rental>> GetActiveRentalsByUserAsync(Guid userId, CancellationToken cancellationToken = default);
     Task<Rental?> GetActiveRentalByBookCopyAsync(Guid bookCopyId, CancellationToken cancellationToken = default);
     Task AddAsync(Rental rental, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Rental>> GetRentalsDueSoonAsync(DateTime windowEnd, CancellationToken cancellationToken = default);
 }

@@ -79,6 +79,27 @@ services:
     networks:
       - library_network
 
+  mailservice:
+    build:
+      context: ../backend/LibraryManagementSystem
+      dockerfile: src/Mail.Service/LibraryManagementSystem.MailService/Dockerfile
+    container_name: library_mailservice
+    restart: unless-stopped
+    environment:
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD}
+      Smtp__Host: ${SMTP_HOST}
+      Smtp__Port: ${SMTP_PORT}
+      Smtp__Username: ${SMTP_USERNAME}
+      Smtp__Password: ${SMTP_PASSWORD}
+      Smtp__FromAddress: ${SMTP_FROM_ADDRESS}
+      Smtp__FromName: Library Management System
+    depends_on:
+      - rabbitmq
+    networks:
+      - library_network
+
 volumes:
   postgres_data:
 

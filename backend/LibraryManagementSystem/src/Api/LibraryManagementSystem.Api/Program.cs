@@ -1,4 +1,7 @@
+using Hangfire;
 using LibraryManagementSystem.Api.DependencyInjection;
+using LibraryManagementSystem.Application.Jobs;
+using LibraryManagementSystem.Infrastructure.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,12 +26,24 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
+await app.MigrateDatabaseAsync();
+
+using (var scope = app.Services.CreateScope())
+{
+    var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+    recurringJobManager.AddOrUpdate<RentalDueSoonReminderJob>(
+        "rental-due-soon-reminder",
+        job => job.ExecuteAsync(CancellationToken.None),
+        Cron.Daily(8));
+}
+
 app.UseRouting();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHangfireDashboard();
 }
 
 app.UseCors("AllowAngularClient");

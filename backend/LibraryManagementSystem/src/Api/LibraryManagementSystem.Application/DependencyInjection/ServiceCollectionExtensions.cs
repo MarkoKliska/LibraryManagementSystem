@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using LibraryManagementSystem.Application.Jobs;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace LibraryManagementSystem.Application.DependencyInjection;
@@ -11,6 +12,8 @@ public static class ServiceCollectionExtensions
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
+
+        services.AddScoped<RentalDueSoonReminderJob>();
 
         return services;
     }

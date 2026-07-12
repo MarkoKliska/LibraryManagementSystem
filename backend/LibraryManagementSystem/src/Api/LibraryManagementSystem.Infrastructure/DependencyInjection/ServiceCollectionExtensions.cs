@@ -1,4 +1,6 @@
-﻿using LibraryManagementSystem.Application.Authentication;
+﻿using Hangfire;
+using Hangfire.PostgreSql;
+using LibraryManagementSystem.Application.Authentication;
 using LibraryManagementSystem.Application.Interfaces;
 using LibraryManagementSystem.Domain.Repositories;
 using LibraryManagementSystem.Infrastructure.Persistence.Contexts;
@@ -40,6 +42,15 @@ public static class ServiceCollectionExtensions
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
+
+        services.AddHangfire(config => config
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UsePostgreSqlStorage(options =>
+                options.UseNpgsqlConnection(configuration.GetConnectionString("DefaultConnection"))));
+
+        services.AddHangfireServer();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();

@@ -1,4 +1,6 @@
-﻿using LibraryManagementSystem.Contracts.Library;
+﻿using System.Globalization;
+using System.Net;
+using LibraryManagementSystem.Contracts.Library;
 
 namespace LibraryManagementSystem.MailService.Templates;
 
@@ -6,10 +8,12 @@ public sealed class BookRentedEmailTemplate : IEmailTemplate<BookRentedIntegrati
 {
     public (string Subject, string Body) Render(BookRentedIntegrationEvent integrationEvent)
     {
+        var bookTitle = WebUtility.HtmlEncode(integrationEvent.BookTitle);
+        var dueDate = integrationEvent.DueDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
         var subject = $"You rented \"{integrationEvent.BookTitle}\"";
         var body = $"""
-            <p>You have successfully rented <strong>{integrationEvent.BookTitle}</strong>.</p>
-            <p>Please return it by <strong>{integrationEvent.DueDate:MMMM d, yyyy}</strong>.</p>
+            <p>You have successfully rented <strong>{bookTitle}</strong>.</p>
+            <p>Please return it by <strong>{dueDate}</strong>.</p>
             """;
         return (subject, body);
     }

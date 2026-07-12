@@ -45,4 +45,14 @@ public class RentalRepository(
     {
         await context.Rentals.AddAsync(rental, cancellationToken);
     }
+
+    public async Task<IEnumerable<Rental>> GetRentalsDueSoonAsync(DateTime windowEnd, CancellationToken cancellationToken = default)
+    {
+        return await context.Rentals
+            .Include(r => r.User)
+            .Include(r => r.BookCopy)
+            .ThenInclude(c => c.Book)
+            .Where(r => r.ReturnDate == null && !r.ReminderSent && r.DueDate <= windowEnd)
+            .ToListAsync(cancellationToken);
+    }
 }

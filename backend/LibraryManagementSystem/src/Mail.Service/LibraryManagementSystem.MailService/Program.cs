@@ -12,12 +12,14 @@ builder.Services.AddScoped<IEmailSender, MailKitEmailSender>();
 builder.Services.AddScoped<IEmailTemplate<UserRegisteredIntegrationEvent>, UserRegisteredEmailTemplate>();
 builder.Services.AddScoped<IEmailTemplate<BookRentedIntegrationEvent>, BookRentedEmailTemplate>();
 builder.Services.AddScoped<IEmailTemplate<BookReturnedIntegrationEvent>, BookReturnedEmailTemplate>();
+builder.Services.AddScoped<IEmailTemplate<RentalDueSoonIntegrationEvent>, RentalDueSoonEmailTemplate>();
 
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<UserRegisteredIntegrationEventConsumer>();
     x.AddConsumer<BookRentedIntegrationEventConsumer>();
     x.AddConsumer<BookReturnedIntegrationEventConsumer>();
+    x.AddConsumer<RentalDueSoonIntegrationEventConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {
