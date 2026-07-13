@@ -43,6 +43,7 @@ services:
       RabbitMq__Host: rabbitmq
       RabbitMq__Username: ${RABBITMQ_USER}
       RabbitMq__Password: ${RABBITMQ_PASSWORD}
+      Cors__AllowedOrigin: http://localhost:8081
     ports:
       - "8080:8080"
     depends_on:
@@ -106,6 +107,9 @@ services:
       dockerfile: Dockerfile
     container_name: library_frontend
     restart: unless-stopped
+    environment:
+      API_HOST: api
+      API_PORT: "8080"
     ports:
       - "8081:80"
     depends_on:
