@@ -37,6 +37,8 @@ using (var scope = app.Services.CreateScope())
         Cron.Daily(8));
 }
 
+app.UseExceptionHandler();
+
 app.UseRouting();
 
 if (app.Environment.IsDevelopment())

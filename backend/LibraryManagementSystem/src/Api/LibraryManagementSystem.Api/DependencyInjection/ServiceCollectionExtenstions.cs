@@ -1,4 +1,5 @@
 ﻿using LibraryManagementSystem.Api.Authentication;
+using LibraryManagementSystem.Api.ErrorHandling;
 using LibraryManagementSystem.Application.DependencyInjection;
 using LibraryManagementSystem.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +37,8 @@ public static class ServiceCollectionExtensions
                     };
                 });
 
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
 
         services.AddControllers();
 
