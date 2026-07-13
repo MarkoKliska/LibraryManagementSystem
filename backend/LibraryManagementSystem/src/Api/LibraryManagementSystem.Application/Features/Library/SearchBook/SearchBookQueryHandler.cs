@@ -7,32 +7,39 @@ namespace LibraryManagementSystem.Application.Features.Library.SearchBook;
 
 public sealed class SearchBooksQueryHandler(
     IBookRepository bookRepository
-) : IRequestHandler<SearchBooksQuery, Result<IEnumerable<SearchBooksResponseDto>>>
+) : IRequestHandler<SearchBooksQuery, Result<PagedResult<SearchBooksResponseDto>>>
 {
-    public async Task<Result<IEnumerable<SearchBooksResponseDto>>> Handle(
+    public async Task<Result<PagedResult<SearchBooksResponseDto>>> Handle(
         SearchBooksQuery query,
         CancellationToken ct)
     {
-        var books = await bookRepository.SearchBooksAsync(
-            query.Request.Title,
-            query.Request.AuthorName,
-            query.Request.GenreName,
-            query.Request.Isbn13,
-            ct);
+        var req = query.Request;
+        var page = Math.Max(1, req.Page);
+        var pageSize = Math.Clamp(req.PageSize, 1, 100);
 
-        var result = books.Select(b => new SearchBooksResponseDto
+        var (books, totalCount) = await bookRepository.SearchBooksAsync(
+            req.Title, req.AuthorName, req.GenreName, req.Isbn13,
+            req.AvailableOnly, page, pageSize, ct);
+
+        var items = books.Select(b => new SearchBooksResponseDto
         {
-            Id = b.Book.Id,
-            Title = b.Book.Title,
-            AuthorName = b.Book.Author.FirstName != null
-                ? $"{b.Book.Author.LastName}, {b.Book.Author.FirstName}"
-                : b.Book.Author.LastName,
-            GenreName = b.Book.Genre.Name,
-            Isbn13 = b.Book.Isbn13,
-            TotalCopies = b.TotalCopies,
-            AvailableCopies = b.AvailableCopies
+            Id = b.Id,
+            Title = b.Title,
+            AuthorName = b.Author.FirstName != null
+                ? $"{b.Author.LastName}, {b.Author.FirstName}"
+                : b.Author.LastName,
+            GenreName = b.Genre.Name,
+            Isbn13 = b.Isbn13,
+            TotalCopies = b.Copies.Count,
+            AvailableCopies = b.Copies.Count(c => !c.Rentals.Any())
         }).ToList();
 
-        return Result<IEnumerable<SearchBooksResponseDto>>.Success(result);
+        return Result<PagedResult<SearchBooksResponseDto>>.Success(new PagedResult<SearchBooksResponseDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        });
     }
 }

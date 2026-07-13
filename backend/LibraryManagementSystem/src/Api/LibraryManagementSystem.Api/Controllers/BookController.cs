@@ -2,7 +2,6 @@
 using LibraryManagementSystem.Application.DTOs.Library.RentBook;
 using LibraryManagementSystem.Application.DTOs.Library.ReturnBook;
 using LibraryManagementSystem.Application.DTOs.Library.SearchBook;
-using LibraryManagementSystem.Application.Features.Library.GetAllBooksQuery;
 using LibraryManagementSystem.Application.Features.Library.GetRentedBooks;
 using LibraryManagementSystem.Application.Features.Library.RentBook;
 using LibraryManagementSystem.Application.Features.Library.ReturnBook;
@@ -21,17 +20,6 @@ public class BookController(
     IMediator mediator
 ) : ControllerBase
 {
-    [HttpGet("all")]
-    public async Task<IActionResult> GetAllBooks(CancellationToken ct)
-    {
-        var result = await mediator.Send(new GetAllBooksQuery(), ct);
-
-        if (!result.IsSuccess)
-            return BadRequest(new { error = result.Error });
-
-        return Ok(result.Value);
-    }
-
     [HttpGet("rented")]
     public async Task<IActionResult> GetRentedBooks(CancellationToken ct)
     {

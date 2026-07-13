@@ -64,9 +64,9 @@ public class AdminController(
     }
 
     [HttpGet("books")]
-    public async Task<IActionResult> GetAllBooks(CancellationToken ct)
+    public async Task<IActionResult> GetAllBooks([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken ct = default)
     {
-        var result = await mediator.Send(new GetAllBooksForAdminQuery(), ct);
+        var result = await mediator.Send(new GetAllBooksForAdminQuery(page, pageSize), ct);
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
         return Ok(result.Value);

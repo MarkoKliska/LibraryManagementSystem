@@ -43,11 +43,14 @@ public class BookRepository(
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<(Book Book, int TotalCopies, int AvailableCopies)>> SearchBooksAsync(
+    public async Task<(IEnumerable<Book> Books, int TotalCount)> SearchBooksAsync(
             string? title,
             string? authorName,
             string? genreName,
             string? isbn13,
+            bool availableOnly,
+            int page,
+            int pageSize,
             CancellationToken cancellationToken = default)
     {
         var query = context.Books
@@ -86,14 +89,40 @@ public class BookRepository(
             query = query.Where(b => EF.Functions.Like(b.Isbn13, $"%{isbnTrimmed}%"));
         }
 
-        var books = await query.ToListAsync(cancellationToken);
+        if (availableOnly)
+        {
+            query = query.Where(b => b.Copies.Any(c =>
+                !c.IsDeleted && !c.Rentals.Any(r => r.ReturnDate == null)));
+        }
 
-        var result = books.Select(b => (
-            Book: b,
-            TotalCopies: b.Copies.Count,
-            AvailableCopies: b.Copies.Count(c => !c.Rentals.Any())
-        )).ToList();
+        var totalCount = await query.CountAsync(cancellationToken);
 
-        return result;
+        var books = await query
+            .OrderBy(b => b.Title)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (books, totalCount);
+    }
+    public async Task<(IEnumerable<Book> Books, int TotalCount)> GetAllPagedAsync(int page, int pageSize, CancellationToken cancellationToken = default)
+    {
+        var query = context.Books
+            .Include(b => b.Author)
+            .Include(b => b.Genre)
+            .Include(b => b.Copies.Where(c => !c.IsDeleted))
+                .ThenInclude(c => c.Rentals.Where(r => r.ReturnDate == null))
+                    .ThenInclude(r => r.User)
+            .Where(b => !b.IsDeleted)
+            .OrderBy(b => b.Title);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var books = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (books, totalCount);
     }
 }

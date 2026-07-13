@@ -17,6 +17,7 @@ import { SaveUserChangesRequest } from '../dto/requests/user/save-user-changes-r
 import { DeleteBookResponse } from '../dto/responses/admin/delete-book-response';
 import { DeleteAuthorRequest } from '../dto/requests/admin/delete-author-request';
 import { DeleteGenreRequest } from '../dto/requests/admin/delete-genre-request';
+import { PagedResult } from '../dto/responses/common/paged-result';
 
 @Injectable({
   providedIn: 'root'
@@ -42,8 +43,8 @@ export class AdminService {
     return this.http.delete<DeleteBookResponse>(`${this.apiUrl}/books`, { body: request });
   }
 
-  getAllBooks(): Observable<BookListResponse[]> {
-    return this.http.get<BookListResponse[]>(`${this.apiUrl}/books`);
+  getAllBooks(page: number, pageSize: number): Observable<PagedResult<BookListResponse>> {
+      return this.http.get<PagedResult<BookListResponse>>(`${this.apiUrl}/books?page=${page}&pageSize=${pageSize}`);
   }
 
   getAllUsers(): Observable<UserListResponse[]> {

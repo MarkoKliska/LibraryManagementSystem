@@ -6,4 +6,7 @@ public record SearchBooksRequestDto
     public string? AuthorName { get; init; }
     public string? GenreName { get; init; }
     public string? Isbn13 { get; init; }
+    public bool AvailableOnly { get; init; } = false;
+    public int Page { get; init; } = 1;
+    public int PageSize { get; init; } = 20;
 }

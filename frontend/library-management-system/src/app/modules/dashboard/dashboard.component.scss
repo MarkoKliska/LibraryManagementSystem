@@ -31,3 +31,48 @@
   color: var(--text-color, #333);
   margin-top: 2rem;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  font-family: var(--font-quicksand);
+
+  span {
+    color: var(--text-color, #333);
+    font-size: 0.95rem;
+  }
+
+  button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary-color, #17313E);
+    color: var(--white-color, #fff);
+    font-family: var(--font-montserrat);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover:not(:disabled) {
+      background: var(--secondary-color, #415E72);
+    }
+
+    &:disabled {
+      background: var(--disabled, #9e9e9e);
+      cursor: not-allowed;
+    }
+  }
+
+  select {
+    padding: 0.6rem;
+    border: 1px solid var(--secondary-color, #415E72);
+    border-radius: 8px;
+    font-family: var(--font-quicksand);
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+}
