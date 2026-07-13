@@ -8,6 +8,7 @@ namespace LibraryManagementSystem.Application.Features.User.DeleteAccount;
 
 public sealed class DeleteAccountCommandHandler(
     IUserRepository users,
+    IRentalRepository rentals,
     IUnitOfWork uow
 ) : IRequestHandler<DeleteAccountCommand, Result>
 {
@@ -20,6 +21,10 @@ public sealed class DeleteAccountCommandHandler(
 
         if (!PasswordHasher.VerifyPassword(command.Request.Password, user.PasswordHash))
             return Result.Failure("Password is incorrect.");
+
+        var activeRentals = await rentals.GetActiveRentalsByUserAsync(command.UserId, ct);
+        if (activeRentals.Any())
+            return Result.Failure("Cannot delete account while you have active rentals. Please return your books first.");
 
         user.SetDeleted();
 

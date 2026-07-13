@@ -1,6 +1,6 @@
-﻿namespace LibraryManagementSystem.Application.DTOs.Library.SearchBook;
+﻿namespace LibraryManagementSystem.Application.DTOs.Library.GetAllBooksForAdmin;
 
-public record SearchBooksResponseDto
+public record BookListForAdminResponseDto
 {
     public Guid Id { get; init; }
     public string Title { get; init; } = default!;
@@ -9,4 +9,6 @@ public record SearchBooksResponseDto
     public string Isbn13 { get; init; } = default!;
     public int TotalCopies { get; init; }
     public int AvailableCopies { get; init; }
+    public Guid? RentedByUserId { get; init; }
+    public string? RentedByUserEmail { get; init; }
 }

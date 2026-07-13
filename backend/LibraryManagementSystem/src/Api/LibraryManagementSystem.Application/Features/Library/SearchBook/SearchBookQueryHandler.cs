@@ -20,26 +20,17 @@ public sealed class SearchBooksQueryHandler(
             query.Request.Isbn13,
             ct);
 
-        var result = books.Select(b =>
+        var result = books.Select(b => new SearchBooksResponseDto
         {
-            var activeRental = b.Book.Copies
-                .SelectMany(c => c.Rentals)
-                .FirstOrDefault();
-
-            return new SearchBooksResponseDto
-            {
-                Id = b.Book.Id,
-                Title = b.Book.Title,
-                AuthorName = b.Book.Author.FirstName != null
-                    ? $"{b.Book.Author.LastName}, {b.Book.Author.FirstName}"
-                    : b.Book.Author.LastName,
-                GenreName = b.Book.Genre.Name,
-                Isbn13 = b.Book.Isbn13,
-                TotalCopies = b.TotalCopies,
-                AvailableCopies = b.AvailableCopies,
-                RentedByUserId = activeRental?.UserId,
-                RentedByUserEmail = activeRental?.User?.Email
-            };
+            Id = b.Book.Id,
+            Title = b.Book.Title,
+            AuthorName = b.Book.Author.FirstName != null
+                ? $"{b.Book.Author.LastName}, {b.Book.Author.FirstName}"
+                : b.Book.Author.LastName,
+            GenreName = b.Book.Genre.Name,
+            Isbn13 = b.Book.Isbn13,
+            TotalCopies = b.TotalCopies,
+            AvailableCopies = b.AvailableCopies
         }).ToList();
 
         return Result<IEnumerable<SearchBooksResponseDto>>.Success(result);

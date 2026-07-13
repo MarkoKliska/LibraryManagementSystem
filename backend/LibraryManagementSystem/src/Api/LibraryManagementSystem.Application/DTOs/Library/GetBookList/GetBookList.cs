@@ -9,6 +9,4 @@ public record BookListResponseDto
     public string Isbn13 { get; init; } = default!;
     public int TotalCopies { get; init; }
     public int AvailableCopies { get; init; }
-    public Guid? RentedByUserId { get; init; }
-    public string? RentedByUserEmail { get; init; }
 }

@@ -23,7 +23,8 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .IsRequired();
 
         builder.HasIndex(b => b.Isbn13)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("\"IsDeleted\" = false");
 
         builder.HasMany(b => b.Copies)
             .WithOne(c => c.Book)

@@ -57,7 +57,6 @@ public class BookRepository(
             .Include(b => b.Genre)
             .Include(b => b.Copies.Where(c => !c.IsDeleted))
                 .ThenInclude(c => c.Rentals.Where(r => r.ReturnDate == null))
-                    .ThenInclude(r => r.User)
             .Where(b => !b.IsDeleted)
             .AsQueryable();
 
