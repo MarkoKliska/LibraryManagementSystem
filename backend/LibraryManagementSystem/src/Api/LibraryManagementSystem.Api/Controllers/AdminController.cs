@@ -14,7 +14,7 @@ using LibraryManagementSystem.Application.Features.Library.DeleteAuthor;
 using LibraryManagementSystem.Application.Features.Library.DeleteBook;
 using LibraryManagementSystem.Application.Features.Library.DeleteGenre;
 using LibraryManagementSystem.Application.Features.Library.GetAllAuthors;
-using LibraryManagementSystem.Application.Features.Library.GetAllBooksQuery;
+using LibraryManagementSystem.Application.Features.Library.GetAllBooksForAdmin;
 using LibraryManagementSystem.Application.Features.Library.GetAllGenres;
 using LibraryManagementSystem.Application.Features.Library.GetBookDetails;
 using LibraryManagementSystem.Application.Features.Library.GetUserDetails;
@@ -66,7 +66,7 @@ public class AdminController(
     [HttpGet("books")]
     public async Task<IActionResult> GetAllBooks(CancellationToken ct)
     {
-        var result = await mediator.Send(new GetAllBooksQuery(), ct);
+        var result = await mediator.Send(new GetAllBooksForAdminQuery(), ct);
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
         return Ok(result.Value);
