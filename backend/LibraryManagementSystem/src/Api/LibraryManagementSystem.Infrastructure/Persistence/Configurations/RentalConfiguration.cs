@@ -19,6 +19,8 @@ public class RentalConfiguration : IEntityTypeConfiguration<Rental>
             .IsRequired();
         builder.Property(r => r.ReturnDate);
 
-        builder.HasIndex(r => new { r.BookCopyId, r.ReturnDate });
+        builder.HasIndex(r => r.BookCopyId)
+            .IsUnique()
+            .HasFilter("\"ReturnDate\" IS NULL");
     }
 }

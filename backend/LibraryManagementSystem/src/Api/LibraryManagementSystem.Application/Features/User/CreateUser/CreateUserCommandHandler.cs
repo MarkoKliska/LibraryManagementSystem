@@ -1,11 +1,12 @@
 ﻿using LibraryManagementSystem.Application.Authentication;
 using LibraryManagementSystem.Application.DTOs.Common;
 using LibraryManagementSystem.Application.DTOs.User.CreateUser;
-using LibraryManagementSystem.Application.Features.User.CreateUser;
 using LibraryManagementSystem.Application.Interfaces;
 using LibraryManagementSystem.Application.Utils;
 using LibraryManagementSystem.Domain.Repositories;
 using MediatR;
+
+namespace LibraryManagementSystem.Application.Features.User.CreateUser;
 
 public sealed class CreateUserCommandHandler(
     IUserRepository users,

@@ -27,6 +27,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(20)
             .IsRequired();
 
+        builder.HasIndex(u => u.Email)
+            .IsUnique()
+            .HasFilter("\"IsDeleted\" = false");
+
         builder.HasMany(u => u.Rentals)
             .WithOne(r => r.User)
             .HasForeignKey(r => r.UserId)
