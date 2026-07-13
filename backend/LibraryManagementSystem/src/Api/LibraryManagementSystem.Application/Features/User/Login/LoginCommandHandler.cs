@@ -12,20 +12,19 @@ public sealed class LoginCommandHandler(
     IJwtTokenService jwtService
 ) : IRequestHandler<LoginCommand, Result<LoginResponseDto>>
 {
+    private const string InvalidCredentialsMessage = "Invalid email or password.";
+
     public async Task<Result<LoginResponseDto>> Handle(LoginCommand command, CancellationToken ct)
     {
         var req = command.Request;
 
         var user = await users.GetByEmailAsync(req.Email, ct);
         if (user is null)
-            return Result<LoginResponseDto>.Failure("Invalid email or password.");
-
-        if (user.IsDeleted)
-            return Result<LoginResponseDto>.Failure("User not found.");
+            return Result<LoginResponseDto>.Failure(InvalidCredentialsMessage);
 
         var valid = PasswordHasher.VerifyPassword(req.Password, user.PasswordHash);
         if (!valid)
-            return Result<LoginResponseDto>.Failure("Incorrect password.");
+            return Result<LoginResponseDto>.Failure(InvalidCredentialsMessage);
 
         var token = jwtService.GenerateToken(user.Id, user.Email, user.Role);
 
