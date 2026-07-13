@@ -1,0 +1,99 @@
+.landing-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(
+    to right,
+    var(--primary-color) 50%,
+    var(--secondary-color) 50%
+  );
+}
+
+.landing-card {
+  display: flex;
+  width: 800px;
+  height: 500px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  background: linear-gradient(
+    to right,
+    var(--secondary-color) 50%,
+    var(--primary-color) 50%
+  );
+}
+
+.landing-left {
+  flex: 1;
+  background-color: transparent;
+  color: var(--white-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+
+  .logo-section {
+    max-width: 250px;
+
+    .logo {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-family: var(--font-montserrat);
+    }
+
+    p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+  }
+}
+
+.landing-right {
+  flex: 1;
+  background-color: transparent;
+  color: var(--white-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+
+  h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    font-family: var(--font-montserrat);
+  }
+
+  p {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 20px;
+
+    button {
+      padding: 10px 20px;
+      background: var(--secondary-color);
+      color: var(--white-color);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #2c4355;
+      }
+    }
+  }
+}

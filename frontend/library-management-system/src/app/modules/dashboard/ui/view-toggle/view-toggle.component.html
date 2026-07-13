@@ -1,0 +1,16 @@
+<div class="view-toggle">
+    <button 
+        class="toggle-btn" 
+        [class.active]="viewMode === 'available'"
+        (click)="modeChanged.emit('available')"
+    >
+    Available Books
+    </button>
+    <button 
+        class="toggle-btn" 
+        [class.active]="viewMode === 'rented'"
+        (click)="modeChanged.emit('rented')"
+    >
+    My Rented Books
+    </button>
+</div>

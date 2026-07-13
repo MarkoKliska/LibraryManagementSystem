@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<div class="profile-layout">
+  <aside class="sidebar">
+    <h2>Profile Page</h2>
+
+    <nav class="sidebar-nav">
+      <a
+        (click)="goGeneralInfo()"
+        [routerLink]="[RouteNames.GeneralInformationRoute]"
+        routerLinkActive="active"
+      >
+        General Information
+      </a>
+
+      <a
+        (click)="goChangePassword()"
+        [routerLink]="[RouteNames.ChangePasswordRoute]"
+        routerLinkActive="active"
+      >
+        Change Password
+      </a>
+
+      <a
+        (click)="goDeleteAccount()"
+        [routerLink]="[RouteNames.DeleteMyAccountRoute]"
+        routerLinkActive="active"
+      >
+        Delete My Account
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

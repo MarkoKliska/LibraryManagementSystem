@@ -69,7 +69,6 @@ docker-compose.override.yml
 ## Secrets (make sure secrets are handled via safe storage!)
 secrets.json
 appsettings.*.local.json
-appsettings.Development.json
 *.pfx
 *.key
 *.pem

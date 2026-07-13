@@ -1,0 +1,30 @@
+<div class="users-list-card">
+  <h2>Users</h2>
+  @if (errorMessage) {
+    <div class="error">{{ errorMessage }}</div>
+  }
+  @if (users.length) {
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user) {
+          <tr>
+            <td>{{ user.firstName }} {{ user.lastName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <button (click)="viewUserDetails(user.id)">View Details</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p>No users found.</p>
+  }
+</div>

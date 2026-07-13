@@ -1,0 +1,64 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-page">
+  <div class="dashboard-container">
+    <app-view-toggle
+      [viewMode]="viewMode"
+      (modeChanged)="switchView($event)">
+    </app-view-toggle>
+
+    @if (viewMode === 'available') {
+      <div class="search-wrapper">
+        <app-search (searchEvent)="onSearch($event)"></app-search>
+      </div>
+    }
+
+    @if (viewMode === 'available' && availableBooks.length) {
+      <div class="book-grid">
+        @for (book of availableBooks; track book) {
+          <app-book-card
+            [book]="book"
+            [type]="'available'"
+            (action)="rentBook($event)">
+          </app-book-card>
+        }
+      </div>
+
+      <div class="pagination">
+        <button (click)="goToPage(page - 1)" [disabled]="page <= 1">Previous</button>
+        <span>Page {{ page }} of {{ totalPages }} ({{ totalCount }} books)</span>
+        <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages">Next</button>
+
+        <select [value]="pageSize" (change)="onPageSizeChange(+$any($event.target).value)">
+          @for (size of pageSizeOptions; track size) {
+            <option [value]="size">{{ size }} / page</option>
+          }
+        </select>
+      </div>
+    }
+
+    @if (viewMode === 'rented' && rentedBooks.length) {
+      <div class="book-grid">
+        @for (book of rentedBooks; track book) {
+          <app-book-card
+            [book]="book"
+            [type]="'rented'"
+            (action)="returnBook($event)">
+          </app-book-card>
+        }
+      </div>
+    }
+
+    @if (viewMode === 'available' && !availableBooks.length && !errorMessage) {
+      <div class="no-books">
+        No available books at the moment.
+      </div>
+    }
+
+    @if (viewMode === 'rented' && !rentedBooks.length && !errorMessage) {
+      <div class="no-books">
+        You haven't rented any books yet.
+      </div>
+    }
+  </div>
+</div>
