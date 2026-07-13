@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../shared/ui/navbar/navbar.component';
 import { RentedBookResponse } from '../../shared/dto/responses/book/rented-book-response';
-import { BookListResponse } from '../../shared/dto/responses/book/book-list-response';
 import { BookService } from '../../shared/services/book.service';
 import { LoaderService } from '../../shared/services/loader.service';
 import { ToastService } from '../../shared/services/toast.service';
@@ -32,6 +31,13 @@ export class DashboardComponent implements OnInit {
   rentedBooks: RentedBookResponse[] = [];
   errorMessage: string | null = null;
 
+  lastSearch: SearchBooksRequest = {};
+  page = 1;
+  pageSize = 12;
+  totalCount = 0;
+  totalPages = 0;
+  readonly pageSizeOptions = [12, 24, 48];
+
   constructor(
     private bookService: BookService,
     private loaderService: LoaderService,
@@ -53,15 +59,29 @@ export class DashboardComponent implements OnInit {
   }
 
   loadAvailableBooks(): void {
-    const emptyRequest: SearchBooksRequest = {};
-    this.onSearch(emptyRequest);
+    this.onSearch({});
   }
 
   onSearch(request: SearchBooksRequest): void {
+    this.lastSearch = request;
+    this.page = 1;
+    this.fetchBooks();
+  }
+
+  fetchBooks(): void {
     this.loaderService.startLoading();
-    this.bookService.searchBooks(request).subscribe({
-      next: (books) => {
-        this.availableBooks = books.filter(book => book.availableCopies > 0);
+    this.bookService.searchBooks(this.lastSearch, this.page, this.pageSize).subscribe({
+      next: (result) => {
+        this.totalCount = result.totalCount;
+        this.totalPages = result.totalPages;
+
+        if (result.items.length === 0 && this.page > 1) {
+          this.page = this.page - 1;
+          this.fetchBooks();
+          return;
+        }
+
+        this.availableBooks = result.items;
         this.loaderService.stopLoading();
       },
       error: (err) => {
@@ -70,6 +90,18 @@ export class DashboardComponent implements OnInit {
         this.toastService.showError(this.errorMessage || 'Failed to load available books.', 'Error');
       }
     });
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.page) return;
+    this.page = page;
+    this.fetchBooks();
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.page = 1;
+    this.fetchBooks();
   }
 
   loadRentedBooks(): void {
@@ -92,9 +124,8 @@ export class DashboardComponent implements OnInit {
     const request: RentBookRequest = { bookId };
     this.bookService.rentBook(request).subscribe({
       next: (response) => {
-        this.loaderService.stopLoading();
         this.toastService.showSuccess(response.message || 'You have rented a book successfully.', 'Success');
-        this.loadAvailableBooks();
+        this.fetchBooks();
         if (this.viewMode === 'rented') {
           this.loadRentedBooks();
         }
@@ -112,11 +143,10 @@ export class DashboardComponent implements OnInit {
     const request: ReturnBookRequest = { rentalId };
     this.bookService.returnBook(request).subscribe({
       next: (response) => {
-        this.loaderService.stopLoading();
         this.toastService.showSuccess(response.message || 'Book successfully returned.', 'Success');
         this.loadRentedBooks();
         if (this.viewMode === 'available') {
-          this.loadAvailableBooks();
+          this.fetchBooks();
         }
       },
       error: (err) => {

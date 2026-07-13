@@ -1,28 +1,26 @@
-﻿using LibraryManagementSystem.Application.DTOs.Library.GetAllBooksForAdmin;
-using LibraryManagementSystem.Application.DTOs.Common;
+﻿using LibraryManagementSystem.Application.DTOs.Common;
+using LibraryManagementSystem.Application.DTOs.Library.GetAllBooksForAdmin;
 using LibraryManagementSystem.Domain.Repositories;
 using MediatR;
 
 namespace LibraryManagementSystem.Application.Features.Library.GetAllBooksForAdmin;
 
 public sealed class GetAllBooksForAdminQueryHandler(
-    IBookRepository bookRepository,
-    IBookCopyRepository bookCopyRepository
-) : IRequestHandler<GetAllBooksForAdminQuery, Result<IEnumerable<BookListForAdminResponseDto>>>
+    IBookRepository bookRepository
+) : IRequestHandler<GetAllBooksForAdminQuery, Result<PagedResult<BookListForAdminResponseDto>>>
 {
-    public async Task<Result<IEnumerable<BookListForAdminResponseDto>>> Handle(GetAllBooksForAdminQuery query, CancellationToken ct)
+    public async Task<Result<PagedResult<BookListForAdminResponseDto>>> Handle(GetAllBooksForAdminQuery query, CancellationToken ct)
     {
-        var books = await bookRepository.GetAllAsync(ct);
-        var result = new List<BookListForAdminResponseDto>();
+        var page = Math.Max(1, query.Page);
+        var pageSize = Math.Clamp(query.PageSize, 1, 100);
 
-        foreach (var book in books.Where(b => !b.IsDeleted))
+        var (books, totalCount) = await bookRepository.GetAllPagedAsync(page, pageSize, ct);
+
+        var items = books.Select(book =>
         {
-            var copies = await bookCopyRepository.GetAvailableCopiesAsync(book.Id, ct);
-            var activeRental = book.Copies
-                .SelectMany(c => c.Rentals)
-                .FirstOrDefault(r => r.ReturnDate == null);
+            var activeRental = book.Copies.SelectMany(c => c.Rentals).FirstOrDefault();
 
-            result.Add(new BookListForAdminResponseDto
+            return new BookListForAdminResponseDto
             {
                 Id = book.Id,
                 Title = book.Title,
@@ -30,12 +28,18 @@ public sealed class GetAllBooksForAdminQueryHandler(
                 GenreName = book.Genre.Name,
                 Isbn13 = book.Isbn13,
                 TotalCopies = book.Copies.Count,
-                AvailableCopies = copies.Count(),
+                AvailableCopies = book.Copies.Count(c => !c.Rentals.Any()),
                 RentedByUserId = activeRental?.UserId,
                 RentedByUserEmail = activeRental?.User.Email
-            });
-        }
+            };
+        }).ToList();
 
-        return Result<IEnumerable<BookListForAdminResponseDto>>.Success(result);
+        return Result<PagedResult<BookListForAdminResponseDto>>.Success(new PagedResult<BookListForAdminResponseDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        });
     }
 }

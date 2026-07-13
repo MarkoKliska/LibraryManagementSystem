@@ -6,6 +6,4 @@ export interface SearchBooksResponse {
   isbn13: string;
   totalCopies: number;
   availableCopies: number;
-  rentedByUserId?: string;
-  rentedByUserEmail?: string;
 }

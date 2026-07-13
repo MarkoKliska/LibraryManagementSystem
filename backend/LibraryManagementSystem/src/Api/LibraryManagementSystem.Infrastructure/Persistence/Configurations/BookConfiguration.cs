@@ -26,6 +26,8 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .IsUnique()
             .HasFilter("\"IsDeleted\" = false");
 
+        builder.HasIndex(b => b.Title);
+
         builder.HasMany(b => b.Copies)
             .WithOne(c => c.Book)
             .HasForeignKey(c => c.BookId)

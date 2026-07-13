@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BookListResponse } from '../../../../shared/dto/responses/admin/book-list-response';
 import { AdminService } from '../../../../shared/services/admin.service';
@@ -19,6 +18,12 @@ export class BooksListComponent implements OnInit {
   books: BookListResponse[] = [];
   errorMessage: string | null = null;
 
+  page = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+  readonly pageSizeOptions = [10, 20, 50];
+
   constructor(
     private adminService: AdminService,
     private loaderService: LoaderService,
@@ -27,10 +32,23 @@ export class BooksListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadBooks();
+  }
+
+  loadBooks(): void {
     this.loaderService.startLoading();
-    this.adminService.getAllBooks().subscribe({
-      next: (books) => {
-        this.books = books;
+    this.adminService.getAllBooks(this.page, this.pageSize).subscribe({
+      next: (result) => {
+        this.totalCount = result.totalCount;
+        this.totalPages = result.totalPages;
+
+        if (result.items.length === 0 && this.page > 1) {
+          this.page = this.page - 1;
+          this.loadBooks();
+          return;
+        }
+
+        this.books = result.items;
         this.loaderService.stopLoading();
       },
       error: (err) => {
@@ -44,6 +62,18 @@ export class BooksListComponent implements OnInit {
     });
   }
 
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.page) return;
+    this.page = page;
+    this.loadBooks();
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.page = 1;
+    this.loadBooks();
+  }
+
   editBook(bookId: string): void {
     this.router.navigate(['admin', 'books', 'edit', bookId]);
   }
@@ -54,9 +84,8 @@ export class BooksListComponent implements OnInit {
       const request: DeleteBookRequest = { bookId };
       this.adminService.deleteBook(request).subscribe({
         next: (response: DeleteBookResponse) => {
-          this.books = this.books.filter(book => book.id !== bookId);
-          this.loaderService.stopLoading();
           this.toastService.showSuccess(response.message || 'Book deleted successfully.', 'Success');
+          this.loadBooks();
         },
         error: (err) => {
           this.errorMessage = err.error?.error || 'Failed to delete book.';
