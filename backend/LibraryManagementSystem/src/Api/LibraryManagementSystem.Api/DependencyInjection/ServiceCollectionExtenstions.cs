@@ -1,4 +1,5 @@
-﻿using LibraryManagementSystem.Application.DependencyInjection;
+﻿using LibraryManagementSystem.Api.Authentication;
+using LibraryManagementSystem.Application.DependencyInjection;
 using LibraryManagementSystem.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,11 @@ public static class ServiceCollectionExtensions
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = ActiveUserTokenValidator.ValidateAsync
+                    };
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
