@@ -13,7 +13,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularClient",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            var allowedOrigin = builder.Configuration["Cors:AllowedOrigin"]
+                ?? throw new InvalidOperationException("Cors:AllowedOrigin is not configured");
+            policy.WithOrigins(allowedOrigin)
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
