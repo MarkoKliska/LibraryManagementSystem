@@ -38,5 +38,11 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~6.0.3",
     "vitest": "^4.0.8"
+  },
+  "overrides": {
+    "ngx-toastr": {
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core"
+    }
   }
 }
