@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Hangfire;
 using LibraryManagementSystem.Api.DependencyInjection;
 using LibraryManagementSystem.Application.Jobs;
@@ -5,6 +6,12 @@ using LibraryManagementSystem.Infrastructure.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+var keyVaultUri = builder.Configuration["KeyVault:Uri"];
+if (!string.IsNullOrEmpty(keyVaultUri))
+{
+    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
+}
 
 builder.Services.AddApiServices(builder.Configuration);
 
