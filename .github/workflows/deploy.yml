@@ -5,7 +5,35 @@ on:
     branches: [master]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build backend
+        run: dotnet build backend/LibraryManagementSystem/LibraryManagementSystem.slnx
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build frontend
+        working-directory: frontend/library-management-system
+        run: |
+          npm ci
+          npm run build -- --configuration production
+
+      - name: Build Docker images
+        run: docker compose -f docker/docker-compose.yml build
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to VM
