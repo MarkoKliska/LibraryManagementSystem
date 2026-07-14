@@ -1,3 +1,4 @@
+using Azure.Identity;
 using LibraryManagementSystem.Contracts.Library;
 using LibraryManagementSystem.Contracts.User;
 using LibraryManagementSystem.MailService.Consumers;
@@ -6,6 +7,12 @@ using LibraryManagementSystem.MailService.Templates;
 using MassTransit;
 
 var builder = Host.CreateApplicationBuilder(args);
+
+var keyVaultUri = builder.Configuration["KeyVault:Uri"];
+if (!string.IsNullOrEmpty(keyVaultUri))
+{
+    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
+}
 
 builder.Services.AddScoped<IEmailSender, MailKitEmailSender>();
 
