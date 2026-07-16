@@ -14,7 +14,7 @@ public class BookRepository(
         return await context.Books
             .Include(b => b.Author)
             .Include(b => b.Genre)
-            .Include(b => b.Copies)
+            .Include(b => b.Copies.Where(c => !c.IsDeleted))
             .FirstOrDefaultAsync(b => b.Id == id && !b.IsDeleted, cancellationToken);
     }
 
@@ -124,5 +124,15 @@ public class BookRepository(
             .ToListAsync(cancellationToken);
 
         return (books, totalCount);
+    }
+
+    public async Task<bool> ExistsByAuthorIdAsync(Guid authorId, CancellationToken cancellationToken = default)
+    {
+        return await context.Books.AnyAsync(b => b.AuthorId == authorId && !b.IsDeleted, cancellationToken);
+    }
+
+    public async Task<bool> ExistsByGenreIdAsync(Guid genreId, CancellationToken cancellationToken = default)
+    {
+        return await context.Books.AnyAsync(b => b.GenreId == genreId && !b.IsDeleted, cancellationToken);
     }
 }

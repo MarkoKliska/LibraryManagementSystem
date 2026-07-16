@@ -17,8 +17,7 @@ public sealed class DeleteAuthorCommandHandler(
         if (author == null || author.IsDeleted)
             return Result<string>.Failure("Author not found");
 
-        var hasBooks = await bookRepository.GetAllAsync(ct)
-            .ContinueWith(t => t.Result.Any(b => b.AuthorId == command.Request.AuthorId && !b.IsDeleted), ct);
+        var hasBooks = await bookRepository.ExistsByAuthorIdAsync(command.Request.AuthorId, ct);
         if (hasBooks)
             return Result<string>.Failure("Cannot delete author because they have associated books");
 

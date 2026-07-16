@@ -24,6 +24,17 @@
         }
       </tbody>
     </table>
+    <div class="pagination">
+      <button (click)="goToPage(page - 1)" [disabled]="page <= 1">Previous</button>
+      <span>Page {{ page }} of {{ totalPages }} ({{ totalCount }} users)</span>
+      <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages">Next</button>
+
+      <select [value]="pageSize" (change)="onPageSizeChange(+$any($event.target).value)">
+        @for (size of pageSizeOptions; track size) {
+          <option [value]="size">{{ size }} / page</option>
+        }
+      </select>
+    </div>
   } @else {
     <p>No users found.</p>
   }

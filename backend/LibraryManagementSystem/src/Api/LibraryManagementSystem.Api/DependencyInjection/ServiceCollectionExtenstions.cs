@@ -58,8 +58,8 @@ public static class ServiceCollectionExtensions
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n" +
-                      "Unesite 'Bearer' [space] i vaš token u polje ispod.\r\n\r\n" +
-                      "Primer: \"Bearer 12345abcdef\"",
+                      "Enter 'Bearer' [space] and your token in the field below.\r\n\r\n" +
+                      "Example: \"Bearer 12345abcdef\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
