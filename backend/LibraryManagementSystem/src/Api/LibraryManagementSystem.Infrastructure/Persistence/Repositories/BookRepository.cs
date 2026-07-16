@@ -14,7 +14,7 @@ public class BookRepository(
         return await context.Books
             .Include(b => b.Author)
             .Include(b => b.Genre)
-            .Include(b => b.Copies)
+            .Include(b => b.Copies.Where(c => !c.IsDeleted))
             .FirstOrDefaultAsync(b => b.Id == id && !b.IsDeleted, cancellationToken);
     }
 
