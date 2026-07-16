@@ -125,4 +125,14 @@ public class BookRepository(
 
         return (books, totalCount);
     }
+
+    public async Task<bool> ExistsByAuthorIdAsync(Guid authorId, CancellationToken cancellationToken = default)
+    {
+        return await context.Books.AnyAsync(b => b.AuthorId == authorId && !b.IsDeleted, cancellationToken);
+    }
+
+    public async Task<bool> ExistsByGenreIdAsync(Guid genreId, CancellationToken cancellationToken = default)
+    {
+        return await context.Books.AnyAsync(b => b.GenreId == genreId && !b.IsDeleted, cancellationToken);
+    }
 }

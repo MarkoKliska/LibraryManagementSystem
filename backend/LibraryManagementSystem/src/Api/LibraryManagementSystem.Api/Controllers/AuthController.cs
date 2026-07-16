@@ -5,11 +5,13 @@ using LibraryManagementSystem.Application.Features.User.CreateUser;
 using LibraryManagementSystem.Application.Features.User.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace LibraryManagementSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("AuthPolicy")]
 public class AuthController(
     IMediator mediator
 ) : ControllerBase

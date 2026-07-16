@@ -17,8 +17,7 @@ public sealed class DeleteGenreCommandHandler(
         if (genre == null || genre.IsDeleted)
             return Result<string>.Failure("Genre not found");
 
-        var hasBooks = await bookRepository.GetAllAsync(ct)
-            .ContinueWith(t => t.Result.Any(b => b.GenreId == command.Request.GenreId && !b.IsDeleted), ct);
+        var hasBooks = await bookRepository.ExistsByGenreIdAsync(command.Request.GenreId, ct);
         if (hasBooks)
             return Result<string>.Failure("Cannot delete genre because it has associated books");
 

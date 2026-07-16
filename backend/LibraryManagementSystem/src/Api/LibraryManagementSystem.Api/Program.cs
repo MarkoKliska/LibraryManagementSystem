@@ -3,7 +3,8 @@ using Hangfire;
 using LibraryManagementSystem.Api.DependencyInjection;
 using LibraryManagementSystem.Application.Jobs;
 using LibraryManagementSystem.Infrastructure.DependencyInjection;
-
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,22 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("AuthPolicy", opt =>
+    {
+        opt.PermitLimit = 5;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
+    });
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = async (context, ct) =>
+    {
+        context.HttpContext.Response.ContentType = "application/json";
+        await context.HttpContext.Response.WriteAsJsonAsync(new { error = "Too many attempts. Please try again in a minute." }, ct);
+    };
 });
 
 builder.Services.AddAuthorization(options =>
@@ -58,10 +75,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAngularClient");
-app.UseHttpsRedirection();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseHttpsRedirection();
 
 
 app.Run();

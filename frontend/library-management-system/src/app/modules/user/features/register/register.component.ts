@@ -75,7 +75,7 @@ export class RegisterComponent {
         this.errorMessage = err.error?.error || 'Registration failed. Try again.';
         this.isSubmitting = false;
         this.loaderService.stopLoading();
-        this.toastService.showError(err.error?.error, 'Error');
+        this.toastService.showError(err.error?.error || 'Registration failed. Try again.', 'Error');
       },
     });
   }
