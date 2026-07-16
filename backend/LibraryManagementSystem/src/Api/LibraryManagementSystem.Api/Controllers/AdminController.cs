@@ -82,9 +82,9 @@ public class AdminController(
     }
 
     [HttpGet("users")]
-    public async Task<IActionResult> GetAllUsers(CancellationToken ct)
+    public async Task<IActionResult> GetAllUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken ct = default)
     {
-        var result = await mediator.Send(new GetAllUsersQuery(), ct);
+        var result = await mediator.Send(new GetAllUsersQuery(page, pageSize), ct);
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
         return Ok(result.Value);

@@ -30,4 +30,21 @@ public class UserRepository(
             .Where(u => !u.IsDeleted)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<(IEnumerable<User> Users, int TotalCount)> GetAllPagedAsync(int page, int pageSize, CancellationToken cancellationToken = default)
+    {
+        var query = context.Users
+            .Where(u => !u.IsDeleted)
+            .OrderBy(u => u.LastName)
+            .ThenBy(u => u.FirstName);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var users = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (users, totalCount);
+    }
 }
