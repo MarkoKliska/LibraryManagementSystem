@@ -48,11 +48,12 @@ public sealed class UpdateBookCommandHandler(
         var currentCopies = book.Copies.Count;
         if (request.NumberOfCopies < currentCopies)
         {
+            var copiesToRemoveCount = currentCopies - request.NumberOfCopies;
             var availableCopies = await bookCopyRepository.GetAvailableCopiesAsync(book.Id, ct);
-            if (availableCopies.Count() < currentCopies)
+            if (availableCopies.Count() < copiesToRemoveCount)
                 return Result<AddBookResponseDto>.Failure("Cannot reduce copies while some are rented");
 
-            var copiesToRemove = book.Copies.OrderBy(c => c.Id).Skip(request.NumberOfCopies).ToList();
+            var copiesToRemove = availableCopies.OrderBy(c => c.Id).Take(copiesToRemoveCount).ToList();
             foreach (var copy in copiesToRemove)
             {
                 copy.SetDeleted();

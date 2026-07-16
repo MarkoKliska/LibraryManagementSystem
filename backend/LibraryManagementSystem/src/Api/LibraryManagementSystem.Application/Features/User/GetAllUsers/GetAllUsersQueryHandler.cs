@@ -7,13 +7,16 @@ namespace LibraryManagementSystem.Application.Features.User.GetAllUsers;
 
 public sealed class GetAllUsersQueryHandler(
     IUserRepository userRepository
-) : IRequestHandler<GetAllUsersQuery, Result<IEnumerable<GetAllUsersResponseDto>>>
+) : IRequestHandler<GetAllUsersQuery, Result<PagedResult<GetAllUsersResponseDto>>>
 {
-    public async Task<Result<IEnumerable<GetAllUsersResponseDto>>> Handle(GetAllUsersQuery query, CancellationToken ct)
+    public async Task<Result<PagedResult<GetAllUsersResponseDto>>> Handle(GetAllUsersQuery query, CancellationToken ct)
     {
-        var users = await userRepository.GetAllAsync(ct);
-        var result = users
-            .Where(u => !u.IsDeleted)
+        var page = Math.Max(1, query.Page);
+        var pageSize = Math.Clamp(query.PageSize, 1, 100);
+
+        var (users, totalCount) = await userRepository.GetAllPagedAsync(page, pageSize, ct);
+
+        var items = users
             .Select(u => new GetAllUsersResponseDto
             {
                 Id = u.Id,
@@ -23,6 +26,12 @@ public sealed class GetAllUsersQueryHandler(
             })
             .ToList();
 
-        return Result<IEnumerable<GetAllUsersResponseDto>>.Success(result);
+        return Result<PagedResult<GetAllUsersResponseDto>>.Success(new PagedResult<GetAllUsersResponseDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        });
     }
 }

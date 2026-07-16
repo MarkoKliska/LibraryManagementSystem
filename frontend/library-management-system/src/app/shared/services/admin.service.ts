@@ -47,8 +47,8 @@ export class AdminService {
       return this.http.get<PagedResult<BookListResponse>>(`${this.apiUrl}/books?page=${page}&pageSize=${pageSize}`);
   }
 
-  getAllUsers(): Observable<UserListResponse[]> {
-    return this.http.get<UserListResponse[]>(`${this.apiUrl}/users`);
+  getAllUsers(page: number, pageSize: number): Observable<PagedResult<UserListResponse>> {
+    return this.http.get<PagedResult<UserListResponse>>(`${this.apiUrl}/users?page=${page}&pageSize=${pageSize}`);
   }
 
   getUserDetails(userId: string): Observable<UserDetailsResponse> {

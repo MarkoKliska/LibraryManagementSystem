@@ -65,7 +65,7 @@ export class LoginComponent {
       },
       error: (err) => {
         this.errorMessage = err.error?.error || 'Login failed. Check credentials.';
-        this.toastService.showError(err.error?.error, 'Error')
+        this.toastService.showError(err.error?.error || 'Login failed. Check credentials.', 'Error');
         this.isSubmitting = false;
         this.loaderService.stopLoading();
       }

@@ -6,6 +6,45 @@
   margin: 2rem auto;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    span {
+      color: var(--text-color, #333);
+      font-size: 0.9rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background: var(--primary, #1976d2);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover:not(:disabled) {
+        background: var(--primary-dark, #1565c0);
+      }
+
+      &:disabled {
+        background: var(--border-color, #ccc);
+        cursor: not-allowed;
+      }
+    }
+
+    select {
+      padding: 0.5rem;
+      border: 1px solid var(--border-color, #ccc);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  }
+  
   h2 {
     font-size: 1.4rem;
     font-weight: 600;
@@ -47,4 +86,5 @@
       }
     }
   }
+  
 }

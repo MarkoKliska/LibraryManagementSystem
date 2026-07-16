@@ -18,4 +18,6 @@ public interface IBookRepository
         int pageSize,
         CancellationToken cancellationToken = default);
     Task<(IEnumerable<Book> Books, int TotalCount)> GetAllPagedAsync(int page, int pageSize, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByAuthorIdAsync(Guid authorId, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByGenreIdAsync(Guid genreId, CancellationToken cancellationToken = default);
 }

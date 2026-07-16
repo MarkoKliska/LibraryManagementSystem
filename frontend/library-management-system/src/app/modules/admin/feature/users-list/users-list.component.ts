@@ -5,7 +5,6 @@ import { LoaderService } from '../../../../shared/services/loader.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-users-list',
   imports: [],
@@ -17,6 +16,12 @@ export class UsersListComponent implements OnInit {
   users: UserListResponse[] = [];
   errorMessage: string | null = null;
 
+  page = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+  readonly pageSizeOptions = [10, 20, 50];
+
   constructor(
     private adminService: AdminService,
     private loaderService: LoaderService,
@@ -25,21 +30,46 @@ export class UsersListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadUsers();
+  }
+
+  loadUsers(): void {
     this.loaderService.startLoading();
-    this.adminService.getAllUsers().subscribe({
-      next: (users) => {
-        this.users = users;
+    this.adminService.getAllUsers(this.page, this.pageSize).subscribe({
+      next: (result) => {
+        this.totalCount = result.totalCount;
+        this.totalPages = result.totalPages;
+
+        if (result.items.length === 0 && this.page > 1) {
+          this.page = this.page - 1;
+          this.loadUsers();
+          return;
+        }
+
+        this.users = result.items;
         this.loaderService.stopLoading();
       },
       error: (err) => {
         this.errorMessage = err.error?.error || 'Failed to load users.';
         this.loaderService.stopLoading();
-        if(this.errorMessage)
+        if (this.errorMessage)
           this.toastService.showError(this.errorMessage, 'Error');
-        else 
-           this.toastService.showError('Failed to load users.', 'Error');
+        else
+          this.toastService.showError('Failed to load users.', 'Error');
       }
     });
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.page) return;
+    this.page = page;
+    this.loadUsers();
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.page = 1;
+    this.loadUsers();
   }
 
   viewUserDetails(userId: string): void {
