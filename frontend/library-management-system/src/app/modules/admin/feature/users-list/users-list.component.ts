@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserListResponse } from '../../../../shared/dto/responses/admin/user-list-response';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
@@ -12,7 +14,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './users-list.component.scss'
 })
-export class UsersListComponent implements OnInit {
+export class UsersListComponent implements OnInit, OnDestroy {
   users: UserListResponse[] = [];
   errorMessage: string | null = null;
 
@@ -20,7 +22,10 @@ export class UsersListComponent implements OnInit {
   pageSize = 10;
   totalCount = 0;
   totalPages = 0;
+  searchTerm = '';
   readonly pageSizeOptions = [10, 20, 50];
+
+  private searchSubject = new Subject<string>();
 
   constructor(
     private adminService: AdminService,
@@ -30,12 +35,23 @@ export class UsersListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((term) => {
+        this.searchTerm = term;
+        this.page = 1;
+        this.loadUsers();
+      });
     this.loadUsers();
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubject.complete();
   }
 
   loadUsers(): void {
     this.loaderService.startLoading();
-    this.adminService.getAllUsers(this.page, this.pageSize).subscribe({
+    this.adminService.getAllUsers(this.page, this.pageSize, this.searchTerm).subscribe({
       next: (result) => {
         this.totalCount = result.totalCount;
         this.totalPages = result.totalPages;
@@ -58,6 +74,10 @@ export class UsersListComponent implements OnInit {
           this.toastService.showError('Failed to load users.', 'Error');
       }
     });
+  }
+
+  onSearchChange(value: string): void {
+    this.searchSubject.next(value);
   }
 
   goToPage(page: number): void {

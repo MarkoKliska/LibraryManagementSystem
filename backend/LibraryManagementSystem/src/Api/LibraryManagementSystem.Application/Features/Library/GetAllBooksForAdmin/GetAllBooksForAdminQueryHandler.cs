@@ -14,7 +14,7 @@ public sealed class GetAllBooksForAdminQueryHandler(
         var page = Math.Max(1, query.Page);
         var pageSize = Math.Clamp(query.PageSize, 1, 100);
 
-        var (books, totalCount) = await bookRepository.GetAllPagedAsync(page, pageSize, ct);
+        var (books, totalCount) = await bookRepository.GetAllPagedAsync(page, pageSize, query.Search, ct);
 
         var items = books.Select(book =>
         {

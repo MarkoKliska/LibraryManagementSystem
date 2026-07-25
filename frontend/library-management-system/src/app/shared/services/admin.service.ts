@@ -43,12 +43,32 @@ export class AdminService {
     return this.http.delete<DeleteBookResponse>(`${this.apiUrl}/books`, { body: request });
   }
 
-  getAllBooks(page: number, pageSize: number): Observable<PagedResult<BookListResponse>> {
-      return this.http.get<PagedResult<BookListResponse>>(`${this.apiUrl}/books?page=${page}&pageSize=${pageSize}`);
+  getAllBooks(page: number, pageSize: number, search?: string): Observable<PagedResult<BookListResponse>> {
+    let url = `${this.apiUrl}/books?page=${page}&pageSize=${pageSize}`;
+    if (search && search.trim())
+      url += `&search=${encodeURIComponent(search.trim())}`;
+    return this.http.get<PagedResult<BookListResponse>>(url);
   }
 
-  getAllUsers(page: number, pageSize: number): Observable<PagedResult<UserListResponse>> {
-    return this.http.get<PagedResult<UserListResponse>>(`${this.apiUrl}/users?page=${page}&pageSize=${pageSize}`);
+  getAllUsers(page: number, pageSize: number, search?: string): Observable<PagedResult<UserListResponse>> {
+    let url = `${this.apiUrl}/users?page=${page}&pageSize=${pageSize}`;
+    if (search && search.trim())
+      url += `&search=${encodeURIComponent(search.trim())}`;
+    return this.http.get<PagedResult<UserListResponse>>(url);
+  }
+
+  getAuthorsPaged(page: number, pageSize: number, search?: string): Observable<PagedResult<AddAuthorResponse>> {
+    let url = `${this.apiUrl}/authors/paged?page=${page}&pageSize=${pageSize}`;
+    if (search && search.trim())
+      url += `&search=${encodeURIComponent(search.trim())}`;
+    return this.http.get<PagedResult<AddAuthorResponse>>(url);
+  }
+
+  getGenresPaged(page: number, pageSize: number, search?: string): Observable<PagedResult<AddGenreResponse>> {
+    let url = `${this.apiUrl}/genres/paged?page=${page}&pageSize=${pageSize}`;
+    if (search && search.trim())
+      url += `&search=${encodeURIComponent(search.trim())}`;
+    return this.http.get<PagedResult<AddGenreResponse>>(url);
   }
 
   getUserDetails(userId: string): Observable<UserDetailsResponse> {

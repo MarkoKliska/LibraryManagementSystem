@@ -20,9 +20,18 @@
       <button type="submit" class="btn-submit" [disabled]="isSubmitting || addGenreForm.invalid">
         {{ isSubmitting ? 'Adding...' : 'Add Genre' }}
       </button>
-    </form>
+  </form>
 
-    <h3>Genres List</h3>
+  <h3>Genres List</h3>
+
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Search by name..."
+        [value]="searchTerm"
+        (input)="onSearchChange($any($event.target).value)" />
+    </div>
+
     @if (genres.length) {
       <div class="genres-list">
         <table>
@@ -43,6 +52,18 @@
             }
           </tbody>
         </table>
+
+        <div class="pagination">
+          <button (click)="goToPage(page - 1)" [disabled]="page <= 1">Previous</button>
+          <span>Page {{ page }} of {{ totalPages }} ({{ totalCount }} genres)</span>
+          <button (click)="goToPage(page + 1)" [disabled]="page >= totalPages">Next</button>
+
+          <select [value]="pageSize" (change)="onPageSizeChange(+$any($event.target).value)">
+            @for (size of pageSizeOptions; track size) {
+              <option [value]="size">{{ size }} / page</option>
+            }
+          </select>
+        </div>
       </div>
     } @else {
       <p>No genres found.</p>
