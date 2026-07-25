@@ -32,4 +32,27 @@ public class GenreRepository(
             .Where(g => !g.IsDeleted)
             .ToListAsync(cancellationToken);
     }
+    public async Task<(IEnumerable<Genre> Genres, int TotalCount)> GetAllPagedAsync(int page, int pageSize, string? search, CancellationToken cancellationToken = default)
+    {
+        var query = context.Genres
+            .Where(g => !g.IsDeleted)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim();
+            query = query.Where(g => EF.Functions.ILike(g.Name, $"%{term}%"));
+        }
+
+        var ordered = query.OrderBy(g => g.Name);
+
+        var totalCount = await ordered.CountAsync(cancellationToken);
+
+        var genres = await ordered
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (genres, totalCount);
+    }
 }

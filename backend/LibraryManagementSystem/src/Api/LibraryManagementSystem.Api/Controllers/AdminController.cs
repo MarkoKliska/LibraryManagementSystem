@@ -16,12 +16,15 @@ using LibraryManagementSystem.Application.Features.Library.DeleteGenre;
 using LibraryManagementSystem.Application.Features.Library.GetAllAuthors;
 using LibraryManagementSystem.Application.Features.Library.GetAllBooksForAdmin;
 using LibraryManagementSystem.Application.Features.Library.GetAllGenres;
+using LibraryManagementSystem.Application.Features.Library.GetAuthorsPaged;
 using LibraryManagementSystem.Application.Features.Library.GetBookDetails;
+using LibraryManagementSystem.Application.Features.Library.GetGenresPaged;
 using LibraryManagementSystem.Application.Features.Library.GetUserDetails;
 using LibraryManagementSystem.Application.Features.Library.UpdateBook;
 using LibraryManagementSystem.Application.Features.User.GetAllUsers;
 using LibraryManagementSystem.Application.Features.User.GetUser;
 using LibraryManagementSystem.Application.Features.User.SaveChanges;
+
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -64,9 +67,9 @@ public class AdminController(
     }
 
     [HttpGet("books")]
-    public async Task<IActionResult> GetAllBooks([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken ct = default)
+    public async Task<IActionResult> GetAllBooks([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null, CancellationToken ct = default)
     {
-        var result = await mediator.Send(new GetAllBooksForAdminQuery(page, pageSize), ct);
+        var result = await mediator.Send(new GetAllBooksForAdminQuery(page, pageSize, search), ct);
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
         return Ok(result.Value);
@@ -82,9 +85,9 @@ public class AdminController(
     }
 
     [HttpGet("users")]
-    public async Task<IActionResult> GetAllUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken ct = default)
+    public async Task<IActionResult> GetAllUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null, CancellationToken ct = default)
     {
-        var result = await mediator.Send(new GetAllUsersQuery(page, pageSize), ct);
+        var result = await mediator.Send(new GetAllUsersQuery(page, pageSize, search), ct);
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
         return Ok(result.Value);
@@ -151,6 +154,24 @@ public class AdminController(
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });
         return Ok(new { message = result.Value });
+    }
+
+    [HttpGet("genres/paged")]
+    public async Task<IActionResult> GetGenresPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null, CancellationToken ct = default)
+    {
+        var result = await mediator.Send(new GetGenresPagedQuery(page, pageSize, search), ct);
+        if (!result.IsSuccess)
+            return BadRequest(new { error = result.Error });
+        return Ok(result.Value);
+    }
+
+    [HttpGet("authors/paged")]
+    public async Task<IActionResult> GetAuthorsPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null, CancellationToken ct = default)
+    {
+        var result = await mediator.Send(new GetAuthorsPagedQuery(page, pageSize, search), ct);
+        if (!result.IsSuccess)
+            return BadRequest(new { error = result.Error });
+        return Ok(result.Value);
     }
 
     [HttpPut("users/save-changes/{userId}")]

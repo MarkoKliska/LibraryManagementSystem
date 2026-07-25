@@ -8,4 +8,5 @@ public interface IGenreRepository
     Task AddAsync(Genre genre, CancellationToken cancellationToken = default);
     Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default);
     Task<IEnumerable<Genre>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<(IEnumerable<Genre> Genres, int TotalCount)> GetAllPagedAsync(int page, int pageSize, string? search, CancellationToken cancellationToken = default);
 }

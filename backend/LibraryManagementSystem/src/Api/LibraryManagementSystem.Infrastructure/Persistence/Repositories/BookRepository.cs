@@ -105,7 +105,7 @@ public class BookRepository(
 
         return (books, totalCount);
     }
-    public async Task<(IEnumerable<Book> Books, int TotalCount)> GetAllPagedAsync(int page, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<(IEnumerable<Book> Books, int TotalCount)> GetAllPagedAsync(int page, int pageSize, string? search, CancellationToken cancellationToken = default)
     {
         var query = context.Books
             .Include(b => b.Author)
@@ -114,11 +114,24 @@ public class BookRepository(
                 .ThenInclude(c => c.Rentals.Where(r => r.ReturnDate == null))
                     .ThenInclude(r => r.User)
             .Where(b => !b.IsDeleted)
-            .OrderBy(b => b.Title);
+            .AsQueryable();
 
-        var totalCount = await query.CountAsync(cancellationToken);
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim();
+            query = query.Where(b =>
+                EF.Functions.ILike(b.Title, $"%{term}%") ||
+                EF.Functions.ILike(b.Author.FirstName ?? "", $"%{term}%") ||
+                EF.Functions.ILike(b.Author.LastName, $"%{term}%") ||
+                EF.Functions.ILike(b.Genre.Name, $"%{term}%") ||
+                EF.Functions.ILike(b.Isbn13, $"%{term}%"));
+        }
 
-        var books = await query
+        var ordered = query.OrderBy(b => b.Title);
+
+        var totalCount = await ordered.CountAsync(cancellationToken);
+
+        var books = await ordered
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

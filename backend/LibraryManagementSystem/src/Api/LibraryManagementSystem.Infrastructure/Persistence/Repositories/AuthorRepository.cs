@@ -36,4 +36,31 @@ public class AuthorRepository(
             .Where(a => !a.IsDeleted)
             .ToListAsync(cancellationToken);
     }
+    public async Task<(IEnumerable<Author> Authors, int TotalCount)> GetAllPagedAsync(int page, int pageSize, string? search, CancellationToken cancellationToken = default)
+    {
+        var query = context.Authors
+            .Where(a => !a.IsDeleted)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim();
+            query = query.Where(a =>
+                EF.Functions.ILike(a.FirstName ?? "", $"%{term}%") ||
+                EF.Functions.ILike(a.LastName, $"%{term}%"));
+        }
+
+        var ordered = query
+            .OrderBy(a => a.LastName)
+            .ThenBy(a => a.FirstName);
+
+        var totalCount = await ordered.CountAsync(cancellationToken);
+
+        var authors = await ordered
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (authors, totalCount);
+    }
 }
