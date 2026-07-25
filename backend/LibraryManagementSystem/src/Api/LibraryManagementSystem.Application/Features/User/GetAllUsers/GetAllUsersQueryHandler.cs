@@ -14,7 +14,7 @@ public sealed class GetAllUsersQueryHandler(
         var page = Math.Max(1, query.Page);
         var pageSize = Math.Clamp(query.PageSize, 1, 100);
 
-        var (users, totalCount) = await userRepository.GetAllPagedAsync(page, pageSize, ct);
+        var (users, totalCount) = await userRepository.GetAllPagedAsync(page, pageSize, query.Search,ct);
 
         var items = users
             .Select(u => new GetAllUsersResponseDto

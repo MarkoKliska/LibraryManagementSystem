@@ -8,4 +8,5 @@ public interface IAuthorRepository
     Task AddAsync(Author author, CancellationToken cancellationToken = default);
     Task<bool> ExistsAsync(string? firstName, string lastName, CancellationToken cancellationToken = default);
     Task<IEnumerable<Author>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<(IEnumerable<Author> Authors, int TotalCount)> GetAllPagedAsync(int page, int pageSize, string? search, CancellationToken cancellationToken = default);
 }

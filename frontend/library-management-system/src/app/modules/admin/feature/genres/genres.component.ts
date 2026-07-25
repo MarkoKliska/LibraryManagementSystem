@@ -1,5 +1,7 @@
 
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { LoaderService } from '../../../../shared/services/loader.service';
@@ -17,12 +19,21 @@ import { DeleteGenreRequest } from '../../../../shared/dto/requests/admin/delete
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './genres.component.scss'
 })
-export class GenresComponent implements OnInit {
+export class GenresComponent implements OnInit, OnDestroy {
   addGenreForm: FormGroup;
   isSubmitting = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
   genres: AddGenreResponse[] = [];
+
+  page = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+  searchTerm = '';
+  readonly pageSizeOptions = [10, 20, 50];
+
+  private searchSubject = new Subject<string>();
 
   constructor(
     private fb: FormBuilder,
@@ -36,16 +47,36 @@ export class GenresComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((term) => {
+        this.searchTerm = term;
+        this.page = 1;
+        this.loadGenres();
+      });
     this.loadGenres();
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubject.complete();
   }
 
   get f() { return this.addGenreForm.controls; }
 
   loadGenres(): void {
     this.loaderService.startLoading();
-    this.adminService.getAllGenres().subscribe({
-      next: (genres) => {
-        this.genres = genres;
+    this.adminService.getGenresPaged(this.page, this.pageSize, this.searchTerm).subscribe({
+      next: (result) => {
+        this.totalCount = result.totalCount;
+        this.totalPages = result.totalPages;
+
+        if (result.items.length === 0 && this.page > 1) {
+          this.page = this.page - 1;
+          this.loadGenres();
+          return;
+        }
+
+        this.genres = result.items;
         this.loaderService.stopLoading();
       },
       error: (err) => {
@@ -53,10 +84,26 @@ export class GenresComponent implements OnInit {
         this.loaderService.stopLoading();
         if(this.errorMessage)
           this.toastService.showError(this.errorMessage, 'Error');
-        else 
+        else
           this.toastService.showError('Failed to load genres.', 'Error');
       }
     });
+  }
+
+  onSearchChange(value: string): void {
+    this.searchSubject.next(value);
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.page) return;
+    this.page = page;
+    this.loadGenres();
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.page = 1;
+    this.loadGenres();
   }
 
   onSubmit(): void {
@@ -93,21 +140,20 @@ export class GenresComponent implements OnInit {
   deleteGenre(genreId: string): void {
     if (!confirm('Are you sure you want to delete this genre?')) return;
     const request: DeleteGenreRequest = {
-       genreId 
+       genreId
       };
     this.loaderService.startLoading();
     this.adminService.deleteGenre(request).subscribe({
       next: () => {
-        this.genres = this.genres.filter(g => g.id !== genreId);
-        this.loaderService.stopLoading();
         this.toastService.showSuccess('Genre deleted successfully!', 'Success');
+        this.loadGenres();
       },
       error: (err) => {
         this.errorMessage = err.error?.error || 'Failed to delete genre.';
         this.loaderService.stopLoading();
         if(this.errorMessage)
           this.toastService.showError(this.errorMessage, 'Error');
-        else 
+        else
           this.toastService.showError('Failed to delete genre.', 'Error');
       }
     });
